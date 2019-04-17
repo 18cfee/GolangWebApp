@@ -14,12 +14,17 @@ func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))
 }
 
+type Todo struct {
+	Title string
+	Id    string
+}
+
 type person struct {
 	FirstName  string
 	LastName   string
 	Subscribed bool
-	EnumO      string
-	courses    []string
+	Enum       string
+	Todos      []Todo
 }
 
 func main() {
@@ -34,16 +39,31 @@ func exit(w http.ResponseWriter, req *http.Request) {
 }
 
 func foo(w http.ResponseWriter, req *http.Request) {
+	test := "enum"
 
 	f := req.FormValue("first")
 	l := req.FormValue("last")
 	s := req.FormValue("subscribe") == "on"
-	e := req.FormValue("enum")
+	e := req.FormValue(test)
 
-	err := tpl.ExecuteTemplate(w, "index.gohtml", person{f, l, s, e})
+	data := person{
+		FirstName:  f,
+		LastName:   l,
+		Subscribed: s,
+		Enum:       test,
+		Todos: []Todo{
+			{Title: "Task 1", Id: test},
+			{Title: "Task 2", Id: test},
+			{Title: "Task 3", Id: test},
+			{Title: "Task 4", Id: test},
+		},
+	}
+
+	err := tpl.ExecuteTemplate(w, "index.html", data)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		log.Fatalln(err)
 	}
+	fmt.Println(req.Form)
 	fmt.Println(f, l, s, e)
 }
