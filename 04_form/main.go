@@ -41,7 +41,7 @@ func exit(w http.ResponseWriter, req *http.Request) {
 func foo(w http.ResponseWriter, req *http.Request) {
 	test := "enum"
 
-	f := req.FormValue("first")
+	f := req.FormValue("first")	
 	l := req.FormValue("last")
 	s := req.FormValue("subscribe") == "on"
 	e := req.FormValue(test)
