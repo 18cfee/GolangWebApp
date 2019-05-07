@@ -21,6 +21,8 @@ func startHTTPServer() *http.Server {
 		io.WriteString(w, "hello world other option\n")
 	})
 
+	http.HandleFunc("/serveVue", serveVue)
+
 	http.HandleFunc("/serveFile", serveFile)
 
 	go func() {
@@ -38,8 +40,13 @@ func startHTTPServer() *http.Server {
 	return srv
 }
 
-func serveFile(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, "hello world from Carl\n")
+func serveFile(w http.ResponseWriter, req *http.Request) {
+	//io.WriteString(w, "hello world from Carl\n")
+	http.ServeFile(w, req, "index.html")
+}
+
+func serveVue(w http.ResponseWriter, req *http.Request) {
+	http.ServeFile(w, req, "vue.html")
 }
 
 func main() {
