@@ -21,6 +21,8 @@ func startHTTPServer() *http.Server {
 		io.WriteString(w, "hello world other option\n")
 	})
 
+	http.HandleFunc("/serveFile", serveFile)
+
 	go func() {
 		// returns ErrServerClosed on graceful close
 		if err := srv.ListenAndServe(); err != http.ErrServerClosed {
@@ -36,14 +38,27 @@ func startHTTPServer() *http.Server {
 	return srv
 }
 
+func serveFile(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, "hello world from Carl\n")
+}
+
 func main() {
 	log.Printf("main: starting HTTP server")
 
 	srv := startHTTPServer()
 
-	log.Printf("main: serving for 10 seconds")
+	var t time.Duration
 
-	time.Sleep(20 * time.Second)
+	t = 2
+
+	fmt.Printf("%T\n", t)
+
+	log.Printf("main: serving for %v seconds", int(t))
+
+	time.Sleep(time.Second * t)
+
+	var anything string
+	fmt.Scanf("%v", &anything)
 
 	log.Printf("main: stopping HTTP server")
 
