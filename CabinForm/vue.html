@@ -65,7 +65,7 @@
                 },
                 UpdatePoll: function (index) {
                     let targetPoll = index + 1;
-                    axios.get('/poll/' + targetPoll, this.polls[index])
+                    axios.get('/poll/?whatUp=' + targetPoll, this.polls[index])
                         .then(res => this.approved('Successful'))
                         .catch(e => this.failed('Unsuccesful'))
                 },

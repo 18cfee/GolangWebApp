@@ -32,7 +32,7 @@ func startHTTPServer() *http.Server {
 
 	http.HandleFunc("/polls", handlers.GetPolls)
 
-	http.HandleFunc("/poll/:index", handlers.UpdatePoll)
+	http.HandleFunc("/poll/", handlers.UpdatePoll)
 
 	http.HandleFunc("/testJson", returnJSON)
 
