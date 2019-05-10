@@ -9,6 +9,8 @@ import (
 
 type H map[string]interface{}
 
+var m map[int]int
+
 func GetPolls(w http.ResponseWriter, req *http.Request) {
 	//io.WriteString(w, "hello world from Carl\n")
 	test := `{"items":[{"id":2,"name":"Vue","topic":"Voguish Vue","src":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Vue.js_Logo.svg/400px-Vue.js_Logo.svg.png","upvotes":3,"downvotes":1},{"id":3,"name":"React","topic":"Remarkable React","src":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png","upvotes":1,"downvotes":1},{"id":4,"name":"Ember","topic":"Excellent Ember","src":"https://cdn-images-1.medium.com/max/741/1*9oD6P0dEfPYp3Vkk2UTzCg.png","upvotes":1,"downvotes":1},{"id":5,"name":"Knockout","topic":"Knightly Knockout","src":"https://images.g2crowd.com/uploads/product/image/social_landscape/social_landscape_1489710848/knockout-js.png","upvotes":7,"downvotes":0}]}`
@@ -33,6 +35,10 @@ func UpdatePoll(w http.ResponseWriter, req *http.Request) {
 	fmt.Println("the url is:", req.URL)
 	fmt.Println("the whatUp is:", req.URL.Query().Get("whatUp"))
 	io.WriteString(w, "{someOther:goingDown}")
+}
+
+func InitMap() {
+	m = make(map[int]int)
 }
 
 // func GetPolls(db *sql.DB) echo.HandlerFunc {

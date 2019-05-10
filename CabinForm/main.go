@@ -19,6 +19,8 @@ func startHTTPServer() *http.Server {
 	// db := initDB("storage.db")
 	// migrate(db)
 
+	handlers.InitMap()
+
 	srv := &http.Server{Addr: ":8081"}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
