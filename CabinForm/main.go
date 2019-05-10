@@ -16,8 +16,8 @@ import (
 
 func startHTTPServer() *http.Server {
 
-	db := initDB("storage.db")
-	migrate(db)
+	// db := initDB("storage.db")
+	// migrate(db)
 
 	srv := &http.Server{Addr: ":8081"}
 
@@ -109,19 +109,19 @@ func main() {
 	log.Printf("main: done. exiting")
 }
 
-func initDB(filepath string) *sql.DB {
-	db, err := sql.Open("sqlite3", filepath)
+// func initDB(filepath string) *sql.DB {
+// 	db, err := sql.Open("sqlite3", filepath)
 
-	if err != nil {
-		panic(err)
-	}
+// 	if err != nil {
+// 		panic(err)
+// 	}
 
-	if db == nil {
-		panic("db nil")
-	}
+// 	if db == nil {
+// 		panic("db nil")
+// 	}
 
-	return db
-}
+// 	return db
+// }
 
 func migrate(db *sql.DB) {
 	sql := `
