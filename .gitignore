@@ -14,3 +14,7 @@
 #local machine stuff
 *.pem
 *Commands.txt
+
+
+#main binary
+CabinForm/main
