@@ -9,10 +9,30 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
+
+func portFromArgs() string {
+	port := "8081"
+	if len(os.Args) == 2 {
+		port = os.Args[1]
+	}
+	fmt.Println("The port is:", port)
+	portInt, err := strconv.ParseInt(port, 10, 64)
+	if err != nil {
+		fmt.Println("There was an error parsing the port, err:", err)
+		os.Exit(3)
+	}
+	if portInt < 1 || portInt > 9999 {
+		fmt.Println("Error the port number is not in the valid range")
+		os.Exit(3)
+	}
+	return port
+}
 
 func startHTTPServer() *http.Server {
 
@@ -21,7 +41,9 @@ func startHTTPServer() *http.Server {
 
 	handlers.InitMap()
 
-	srv := &http.Server{Addr: ":8081"}
+	port := ":" + portFromArgs()
+
+	srv := &http.Server{Addr: port}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		io.WriteString(w, "hello world\n")
