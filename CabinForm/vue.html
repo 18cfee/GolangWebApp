@@ -14,25 +14,39 @@
     <body>
         <div id="msg" style="display: none; padding: 1em; position: fixed; margin: 0px 5px;"></div>
         <div id="app" class="container">
-            <div class="row" style="margin: 1em 0em" v-for="(poll, index) in polls">
             <div class="card col-md-4" style="margin: 20px auto; width: 25rem; background: rgb(93, 95, 104)">
-                <img class="card-img-top" :src="poll.src" alt="Card image">
-                <div class="card-body" >
-                  <p class="card-text text-center" style="font-size: 1.5em; color: white; font-weight: bold"> {{ poll.topic }} as the best JS framework </p>
-                    <form>
-                        <div style="background: white; color: black; padding: 1em; border-radius: 5px;"> <input type="radio" :value="poll.name" :name="poll.name" @change="upvote(index)"> Yes <span style="padding-left: 60%;"><i class="fas fa-thumbs-up"></i> ({{ poll.upvotes }}) </span></div>
-                        <hr>
-                        <div style="background: white; color: black; padding: 1em; border-radius: 5px;"> <input type="radio" :value="poll.name" :name="poll.name" @change="downvote(index)" > No <span style="padding-left: 60%;"><i class="fas fa-thumbs-down"></i> ({{ poll.downvotes }}) </span></div>
-                    </form>
-                    <button class="btn btn-block" style="margin: 1em 0; background: #1bff8b; cursor: pointer; font-weight: bold" v-on:click="UpdatePoll(index)"> Vote ({{ poll.downvotes }}) </button>
+                    <p class="card-text text-center" style="font-size: 1.5em; color: white; font-weight: bold">
+                        Is Golang the best?
+                    </p>
+            </div>
+
+            <div class="row" style="margin: 1em 0em" v-for="(poll, index) in polls">
+                <div class="card col-md-4" style="margin: 20px auto; width: 25rem; background: rgb(93, 95, 104)">
+                    <img class="card-img-top" :src="poll.src" alt="Card image">
+                    <div class="card-body" >
+                    <p class="card-text text-center" style="font-size: 1.5em; color: white; font-weight: bold"> 
+                        {{ poll.topic }} as the best JS framework </p>
+                        <form>
+                            <div style="background: white; color: black; padding: 1em; border-radius: 5px;"> 
+                                <input type="radio" :value="poll.name" :name="poll.name" @change="upvote(index)"> 
+                                Yes <span style="padding-left: 60%;"><i class="fas fa-thumbs-up"></i> ({{ poll.upvotes }}) </span>
+                            </div>
+                            <hr>
+                            <div style="background: white; color: black; padding: 1em; border-radius: 5px;">
+                                 <input type="radio" :value="poll.name" :name="poll.name" @change="downvote(index)" > 
+                                 No <span style="padding-left: 60%;"><i class="fas fa-thumbs-down"></i> ({{ poll.downvotes }}) </span>
+                            </div>
+                        </form>
+                        <button class="btn btn-block" style="margin: 1em 0; background: #1bff8b; cursor: pointer; font-weight: bold" v-on:click="UpdatePoll(index)"> Vote ({{ poll.downvotes }}) </button>
+                    </div>
                 </div>
-              </div>
             </div>
         </div>
     </body>
     </html>
 
     <script>
+        var hello = 'what is doing on'
         var app = new Vue({
             el: '#app',
             data: {
