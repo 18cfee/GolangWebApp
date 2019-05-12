@@ -30,6 +30,9 @@
 
             <h1 v-if="1 == polls[0].downvotes">Vue is awesome!</h1>
 
+            
+            <h1 v-if="showSurvey">Vue is awesome!</h1>
+
             <div class="row" style="margin: 1em 0em" v-for="(poll, index) in polls">
                 <div class="card col-md-4" style="margin: 20px auto; width: 25rem; background: rgb(93, 95, 104)">
                     <img class="card-img-top" :src="poll.src" alt="Card image">
