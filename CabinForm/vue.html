@@ -18,14 +18,25 @@
                     <p class="card-text text-center" style="font-size: 1.5em; color: white; font-weight: bold">
                         Is Golang the best?
                     </p>
+                    <div style="background: white; color: black; padding: 1em; border-radius: 5px;"> 
+                        <input type="radio" value="poll.name" name="poll.name"> 
+                        Yes <span style="padding-left: 60%;"><i class="fas fa-thumbs-up"></i>(2)</span>
+                    </div>
+                    <button class="btn btn-block" style="margin: 1em 0; background: #1bff8b; cursor: pointer; font-weight: bold" v-on:click="SendData(1)"> 
+                        Button To Call Function
+                        {{polls[0].downvotes}}
+                    </button>
             </div>
+
+            <h1 v-if="1 == 1">Vue is awesome!</h1>
 
             <div class="row" style="margin: 1em 0em" v-for="(poll, index) in polls">
                 <div class="card col-md-4" style="margin: 20px auto; width: 25rem; background: rgb(93, 95, 104)">
                     <img class="card-img-top" :src="poll.src" alt="Card image">
                     <div class="card-body" >
-                    <p class="card-text text-center" style="font-size: 1.5em; color: white; font-weight: bold"> 
-                        {{ poll.topic }} as the best JS framework </p>
+                        <p class="card-text text-center" style="font-size: 1.5em; color: white; font-weight: bold"> 
+                            {{ poll.topic }} as the best JS framework 
+                        </p>
                         <form>
                             <div style="background: white; color: black; padding: 1em; border-radius: 5px;"> 
                                 <input type="radio" :value="poll.name" :name="poll.name" @change="upvote(index)"> 
@@ -37,7 +48,9 @@
                                  No <span style="padding-left: 60%;"><i class="fas fa-thumbs-down"></i> ({{ poll.downvotes }}) </span>
                             </div>
                         </form>
-                        <button class="btn btn-block" style="margin: 1em 0; background: #1bff8b; cursor: pointer; font-weight: bold" v-on:click="UpdatePoll(index)"> Vote ({{ poll.downvotes }}) </button>
+                        <button class="btn btn-block" style="margin: 1em 0; background: #1bff8b; cursor: pointer; font-weight: bold" v-on:click="UpdatePoll(index)"> 
+                            Vote ({{ poll.downvotes }}) 
+                        </button>
                     </div>
                 </div>
             </div>
@@ -76,6 +89,9 @@
                         this.polls[n].downvotes += 1;
                         this.click[n] = true;
                     }
+                },
+                SendData: function (number) {
+                    console.log("The send data function if being called", number)
                 },
                 UpdatePoll: function (index) {
                     let targetPoll = index + 1;
