@@ -65,11 +65,13 @@
             data: {
                 polls: [],
                 click: [],
+                showSurvey: Boolean,
             },
             created: function () {
                 axios.get('/polls')
                     .then(res => this.polls = res.data.items ? res.data.items : [])
                     .catch(e => this.failed('Unsuccesful No way'))
+                showSurvey = false
             },
             methods: {
                 upvote: function (n) {
@@ -91,7 +93,10 @@
                     }
                 },
                 SendData: function (number) {
+                    console.log(hello)
                     console.log("The send data function if being called", number)
+                    console.log("shoe the survey", this.showSurvey)
+                    this.showSurvey = !this.showSurvey
                 },
                 UpdatePoll: function (index) {
                     let targetPoll = index + 1;
