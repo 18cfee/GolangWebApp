@@ -31,9 +31,9 @@ func UpdatePoll(w http.ResponseWriter, req *http.Request) {
 	fmt.Println("the content is", string(body))
 	fmt.Printf("the type of the body is %T\n", req.Body)
 	fmt.Println("the params passed in are", len(req.PostForm))
-	fmt.Println("the host is:", req.Host)
-	fmt.Println("the url is:", req.URL)
 	fmt.Println("the whatUp is:", req.URL.Query().Get("whatUp"))
+	req.ParseForm()
+
 	io.WriteString(w, "{someOther:goingDown}")
 }
 
