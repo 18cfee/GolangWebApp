@@ -19,14 +19,25 @@
                         Is Golang the best?
                     </p>
                     <div style="background: white; color: black; padding: 1em; border-radius: 5px;"> 
-                        <input type="radio" value="poll.name" name="poll.name"> 
-                        Yes <span style="padding-left: 60%;"><i class="fas fa-thumbs-up"></i>(2)</span>
+                        <input type="radio" value="sidingf" name="sidingf" @change="updateSiding('red')"> 
+                        Red <span style="padding-left: 60%;"><i class="fas fa-thumbs-up"></i>(2)</span>
+                    </div>
+                    <div style="background: white; color: black; padding: 1em; border-radius: 5px;"> 
+                        <input type="radio" value="sidingf" name="sidingf"> 
+                        White <span style="padding-left: 60%;"><i class="fas fa-thumbs-up"></i>(2)</span>
+                    </div>
+                    <div style="background: white; color: black; padding: 1em; border-radius: 5px;"> 
+                        <input type="radio" value="sidingf" name="sidingf"> 
+                        Blue <span style="padding-left: 60%;"><i class="fas fa-thumbs-up"></i>(2)</span>
                     </div>
                     <button class="btn btn-block" style="margin: 1em 0; background: #1bff8b; cursor: pointer; font-weight: bold" v-on:click="SendData(1)"> 
                         Button To Call Function
                         {{polls[0].downvotes}}
                     </button>
             </div>
+
+            <h2>My deepest, darkest question: {{showSurvey}}</h2>
+            <input v-model="showSurvey"/>
 
             <h1 v-if="1 == polls[0].downvotes">Vue is awesome!</h1>
 
@@ -69,12 +80,14 @@
                 polls: [],
                 click: [],
                 showSurvey: Boolean,
+                siding: String,
             },
             created: function () {
                 axios.get('/polls')
                     .then(res => this.polls = res.data.items ? res.data.items : [])
                     .catch(e => this.failed('Unsuccesful No way'))
-                showSurvey = false
+                this.showSurvey = false
+                siding = "grey"
             },
             methods: {
                 upvote: function (n) {
@@ -96,17 +109,22 @@
                     }
                 },
                 SendData: function (number) {
-                    console.log(hello)
-                    console.log("The send data function if being called", number)
-                    console.log("shoe the survey", this.showSurvey)
-                    this.showSurvey = !this.showSurvey
+                    console.log(hello);
+                    console.log("The send data function if being called", number);
+                    console.log("shoe the survey", this.showSurvey);
+                    this.showSurvey = !this.showSurvey;
                 },
                 UpdatePoll: function (index) {
                     let targetPoll = index + 1;
+                    console.log(this)
                     console.log(this.polls[index])
                     axios.put('/poll/' + targetPoll, this.polls[index])
                         .then(res => this.approved('Successful'))
                         .catch(e => this.failed('Unsuccesful'))
+                },
+                updateSiding: function (color) {
+                    console.log("the siding is ", color);
+                    this.siding = color;
                 },
                 approved: function (data) {
                     $("#msg").css({
