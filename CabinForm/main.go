@@ -12,8 +12,7 @@ import (
 	"os"
 	"strconv"
 	"time"
-
-	_ "github.com/mattn/go-sqlite3"
+	//_ "github.com/mattn/go-sqlite3"
 )
 
 func portFromArgs() string {
