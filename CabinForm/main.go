@@ -10,8 +10,18 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"text/template"
+	"time"
+
+	uuid "github.com/satori/go.uuid"
 	//_ "github.com/mattn/go-sqlite3"
 )
+
+func init() {
+	handlers.InitMap()
+	initUsers()
+	tpl = template.Must(template.ParseGlob("templates/*"))
+}
 
 func portFromArgs() string {
 	port := "8081"
@@ -32,19 +42,11 @@ func portFromArgs() string {
 }
 
 func startHTTPServer() *http.Server {
-
-	// db := initDB("storage.db")
-	// migrate(db)
-
-	handlers.InitMap()
-
 	port := ":" + portFromArgs()
 
 	srv := &http.Server{Addr: port}
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "hello world\n")
-	})
+	http.HandleFunc("/", index)
 
 	http.HandleFunc("/otherEndpoint", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(r.Header)
@@ -61,7 +63,7 @@ func startHTTPServer() *http.Server {
 
 	http.HandleFunc("/serveFile", serveFile)
 
-	http.HandleFunc("/testCookie", generateCookie)
+	http.HandleFunc("/login", login)
 
 	go func() {
 		// returns ErrServerClosed on graceful close
@@ -79,13 +81,34 @@ func startHTTPServer() *http.Server {
 	return srv
 }
 
-func generateCookie(w http.ResponseWriter, req *http.Request) {
-	http.SetCookie(w, &http.Cookie{
-		Name:   "my-cookie",
-		Value:  "some value",
-		MaxAge: 5,
-		Path:   "/",
-	})
+func index(w http.ResponseWriter, req *http.Request) {
+	u := getUser(w, req)
+	showSessions() // for demonstration purposes
+	tpl.ExecuteTemplate(w, "index.gohtml", u)
+}
+
+func getUser(w http.ResponseWriter, req *http.Request) user {
+	// get cookie
+	c, err := req.Cookie("session")
+	if err != nil {
+		sID, _ := uuid.NewV4()
+		c = &http.Cookie{
+			Name:  "session",
+			Value: sID.String(),
+		}
+
+	}
+	c.MaxAge = sessionLength
+	http.SetCookie(w, c)
+
+	// if the user exists already, get user
+	var u user
+	if s, ok := Sessions[c.Value]; ok {
+		s.lastActivity = time.Now()
+		Sessions[c.Value] = s
+		u = Users[s.un]
+	}
+	return u
 }
 
 func serveFile(w http.ResponseWriter, req *http.Request) {
