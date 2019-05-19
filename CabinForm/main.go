@@ -81,9 +81,10 @@ func startHTTPServer() *http.Server {
 
 func generateCookie(w http.ResponseWriter, req *http.Request) {
 	http.SetCookie(w, &http.Cookie{
-		Name:  "my-cookie",
-		Value: "some value",
-		Path:  "/",
+		Name:   "my-cookie",
+		Value:  "some value",
+		MaxAge: 5,
+		Path:   "/",
 	})
 }
 
