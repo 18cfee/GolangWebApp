@@ -28,6 +28,8 @@ func UpdatePoll(w http.ResponseWriter, req *http.Request) {
 		io.WriteString(w, "there was a problem")
 	}
 
+	fmt.Println("the host is", req.Host)
+
 	fmt.Println("the content is", string(body))
 	fmt.Printf("the type of the body is %T\n", req.Body)
 	fmt.Println("the params passed in are", len(req.PostForm))

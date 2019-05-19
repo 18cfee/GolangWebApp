@@ -38,6 +38,7 @@
 
             <h2>My deepest, darkest question: {{showSurvey}}</h2>
             <input v-model="showSurvey"/>
+            <input v-model="siding"/>
 
             <h1 v-if="1 == polls[0].downvotes">Vue is awesome!</h1>
 
@@ -87,7 +88,7 @@
                     .then(res => this.polls = res.data.items ? res.data.items : [])
                     .catch(e => this.failed('Unsuccesful No way'))
                 this.showSurvey = false
-                siding = "grey"
+                this.siding = ""
             },
             methods: {
                 upvote: function (n) {
@@ -113,11 +114,13 @@
                     console.log("The send data function if being called", number);
                     console.log("shoe the survey", this.showSurvey);
                     this.showSurvey = !this.showSurvey;
+                    axios.put('/poll/',this.siding);
                 },
                 UpdatePoll: function (index) {
                     let targetPoll = index + 1;
-                    console.log(this)
-                    console.log(this.polls[index])
+                    console.log(this);
+                    console.log(this.polls[index]);
+                    console.log("hi jos");
                     axios.put('/poll/' + targetPoll, this.polls[index])
                         .then(res => this.approved('Successful'))
                         .catch(e => this.failed('Unsuccesful'))
