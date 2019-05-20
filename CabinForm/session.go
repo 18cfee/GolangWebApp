@@ -25,20 +25,21 @@ type session struct {
 }
 
 var tpl *template.Template
-var Users = map[string]user{}       // user ID, user
-var Sessions = map[string]session{} // session ID, session
+var users = map[string]user{}       // user ID, user
+var sessions = map[string]session{} // session ID, session
 
 const sessionLength int = 10
 
 func initUsers() {
+	password, _ := bcrypt.GenerateFromPassword([]byte("testing"), bcrypt.MinCost)
 	u1 := user{
 		UserName: "carlfee",
-		Password: []byte("testing"),
+		Password: password,
 		First:    "Carl",
 		Last:     "Fee",
 		Role:     "Developer",
 	}
-	Users[u1.UserName] = u1
+	users[u1.UserName] = u1
 }
 
 func login(w http.ResponseWriter, req *http.Request) {
@@ -52,12 +53,16 @@ func login(w http.ResponseWriter, req *http.Request) {
 		un := req.FormValue("username")
 		p := req.FormValue("password")
 		// is there a username?
-		u, ok := Users[un]
+		u, ok := users[un]
+		fmt.Println("the user name is", un)
+		fmt.Println("the password is", p)
 		if !ok {
 			http.Error(w, "Username and/or password do not match", http.StatusForbidden)
 			return
 		}
 		// does the entered password match the stored password?
+		pass := []byte(p)
+		fmt.Println(pass)
 		err := bcrypt.CompareHashAndPassword(u.Password, []byte(p))
 		if err != nil {
 			http.Error(w, "Username and/or password do not match", http.StatusForbidden)
@@ -71,7 +76,7 @@ func login(w http.ResponseWriter, req *http.Request) {
 		}
 		c.MaxAge = sessionLength
 		http.SetCookie(w, c)
-		Sessions[c.Value] = session{un, time.Now()}
+		sessions[c.Value] = session{un, time.Now()}
 		http.Redirect(w, req, "/", http.StatusSeeOther)
 		return
 	}
@@ -84,12 +89,12 @@ func alreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
 	if err != nil {
 		return false
 	}
-	s, ok := Sessions[c.Value]
+	s, ok := sessions[c.Value]
 	if ok {
 		s.lastActivity = time.Now()
-		Sessions[c.Value] = s
+		sessions[c.Value] = s
 	}
-	_, ok = Users[s.un]
+	_, ok = users[s.un]
 	// refresh session
 	c.MaxAge = sessionLength
 	http.SetCookie(w, c)
@@ -99,7 +104,7 @@ func alreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
 func timeCleans() {
 	for {
 		runtime.Gosched()
-		time.Sleep(1 * time.Second)
+		time.Sleep(10 * time.Second)
 		cleanSessions()
 	}
 }
@@ -108,9 +113,9 @@ func timeCleans() {
 func cleanSessions() {
 	fmt.Println("BEFORE CLEAN") // for demonstration purposes
 	showSessions()              // for demonstration purposes
-	for k, v := range Sessions {
+	for k, v := range sessions {
 		if time.Now().Sub(v.lastActivity) > (time.Second * 30) {
-			delete(Sessions, k)
+			delete(sessions, k)
 		}
 	}
 	fmt.Println("AFTER CLEAN") // for demonstration purposes
@@ -120,7 +125,7 @@ func cleanSessions() {
 // for demonstration purposes
 func showSessions() {
 	fmt.Println("********")
-	for k, v := range Sessions {
+	for k, v := range sessions {
 		fmt.Println(k, v.un)
 	}
 	fmt.Println("")

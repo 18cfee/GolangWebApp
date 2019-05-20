@@ -21,6 +21,7 @@ func init() {
 	handlers.InitMap()
 	initUsers()
 	tpl = template.Must(template.ParseGlob("templates/*"))
+	go timeCleans()
 }
 
 func portFromArgs() string {
@@ -103,10 +104,10 @@ func getUser(w http.ResponseWriter, req *http.Request) user {
 
 	// if the user exists already, get user
 	var u user
-	if s, ok := Sessions[c.Value]; ok {
+	if s, ok := sessions[c.Value]; ok {
 		s.lastActivity = time.Now()
-		Sessions[c.Value] = s
-		u = Users[s.un]
+		sessions[c.Value] = s
+		u = users[s.un]
 	}
 	return u
 }
@@ -120,13 +121,13 @@ func serveVue(w http.ResponseWriter, req *http.Request) {
 	http.ServeFile(w, req, "vue.html")
 }
 
-type Person struct {
+type person struct {
 	Name string
 	Age  int
 }
 
 func returnJSON(w http.ResponseWriter, req *http.Request) {
-	carl := Person{"carl", 22}
+	carl := person{"carl", 22}
 	c, err := json.Marshal(&carl)
 	if err != nil {
 		fmt.Println(err)
