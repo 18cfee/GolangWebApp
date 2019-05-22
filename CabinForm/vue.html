@@ -4,34 +4,92 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <title>A GO Voting Poll Application With Pusher </title>
     </head>
+    <div class = "text-center" style="color:#199756; font-size: 2em"> Riverside Cabins </div>
     <body>
+
         <div id="msg" style="display: none; padding: 1em; position: fixed; margin: 0px 5px;"></div>
         <div id="app" class="container">
+
+                <div style="padding: 1.5em;" class="text-center" > 
+                        <label style="position:absolute; left: 100px" >  First name </label>
+                         <input type="text" style="position:absolute; left: 200px" id="Fname" v-model="Fname"/>  
+                         <label style="position:absolute;  left: 450px"> Last name </label>
+                         <input type="text" style="position:absolute; left: 550px" v-model="Lname"/> 
+                 </div>
+
+                <div style="padding: 1.5em"> 
+                        <label style="position:absolute; left: 80px">  Primary Phone </label>
+                        <input type="text" style="position:absolute; left: 200px" v-model = "primaryPhone"> 
+                        <label style="position:absolute;  left: 450px"> Secondary Phone </label>
+                        <input type="text" style="position:absolute;  left: 600px" v-model = "secPhone"> 
+                </div>
+
+                <div style="padding: 1.5em">
+                        <label style="position:absolute; left: 80px"> Email Adress </label> 
+                         <input type="text" style="position:absolute; left: 200px" v-model = "Email">  
+                </div>
+
+                <div style="padding: 1.5em"> 
+                        <label style="position:absolute; left: 60px">  Customer Address </label>
+                        <input type="text" style="position:absolute; left: 200px" v-model = "custAdress"> 
+                        <label style="position:absolute;  left: 400px"> City </label>
+                        <input type="text" style="position:absolute;  left: 450px" v-model ="custCity">
+                        <label style="position:absolute;  left: 650px"> Zip </label>
+                        <input type="text" style="position:absolute;  left: 700px" v-model = "custZip">
+                        <label style="position:absolute;  left: 900px"> State </label>
+                        <input type="text" style="position:absolute;  left: 975px" v-model = "custState"> 
+                </div>
+
+                <div style="padding: 1.5em"> 
+                        <label style="position:absolute; left: 60px">  Job Address </label>
+                        <input type="text" style="position:absolute; left: 200px" v-model = "jobAdress"> 
+                        <label style="position:absolute;  left: 400px"> City </label>
+                        <input type="text" style="position:absolute;  left: 450px" v-model = "jobCity">
+                        <label style="position:absolute;  left: 650px"> Zip </label>
+                        <input type="text" style="position:absolute;  left: 700px" v-model = "jobZip">
+                        <label style="position:absolute;  left: 900px"> State </label>
+                        <input type="text" style="position:absolute;  left: 975px" v-model = "jobState"> 
+                </div>
+                    
+                    <button class="btn btn-block" style="margin: 1em 0; background: #1bff8b; cursor: pointer; font-weight: bold" v-on:click="SendData(1)"> 
+                            Submit
+                    </button>
+                    <div v-if="showSurvey">
+
+                        <div> {{Fname}} {{Lname}} </div>
+                        <div>  {{primaryPhone}} {{secPhone}}</div>
+                        <div> {{Email}}</div>
+                        <div> {{custAdress}} {{custCity}} {{custZip}} {{custState}} </div>
+                        <div> {{jobAdress}} {{jobCity}} {{jobZip}} {{jobState}} </div>
+
+                    </div>
+
+
             <div class="card col-md-4" style="margin: 20px auto; width: 25rem; background: rgb(93, 95, 104)">
                     <p class="card-text text-center" style="font-size: 1.5em; color: white; font-weight: bold">
-                        Is Golang the best?
+                        This is the form.
                     </p>
                     <div style="background: rgb(34, 124, 120); color: black; padding: 1em; border-radius: 5px;"> 
-                        <input type="radio" value="sidingf" name="sidingf" @change="updateSiding('red')"> 
-                        Red <span style="padding-left: 60%;"><i class="fas fa-thumbs-up"></i>(2)</span>
+                        name <input type="text" value="sidingf" name="sidingf" v-model="showSurvey"> 
+                        name <input type="text" value="sidingf" name="sidingf" v-model="showSurvey">
+                        
                     </div>
                     <div style="background: white; color: black; padding: 1em; border-radius: 5px;"> 
-                        <input type="radio" value="sidingf" name="sidingf"> 
-                        White <span style="padding-left: 60%;"><i class="fas fa-thumbs-up"></i>(2)</span>
+                        Number <input type="text" value="sidingf" name="sidingf"> 
+                         
                     </div>
                     <div style="background: white; color: black; padding: 1em; border-radius: 5px;"> 
-                        <input type="radio" value="sidingf" name="sidingf"> 
-                        Blue <span style="padding-left: 60%;"><i class="fas fa-thumbs-up"></i>(2)</span>
+                        Email <input type="text" value="sidingf" name="sidingf"> 
+                         
                     </div>
                     <button class="btn btn-block" style="margin: 1em 0; background: #1bff8b; cursor: pointer; font-weight: bold" v-on:click="SendData(1)"> 
-                        Button To Call Function
+                        This is the submit buttton
                         {{polls[0].downvotes}}
                     </button>
             </div>
@@ -42,7 +100,7 @@
             <h1 v-if="1 == polls[0].downvotes">Vue is awesome!</h1>
 
             
-            <h1 v-if="showSurvey">Vue is awesome!</h1>
+            <h1 v-if="showSurvey">{{Fname}} {{Lname}}</h1>
 
             <div class="row" style="margin: 1em 0em" v-for="(poll, index) in polls">
                 <div class="card col-md-4" style="margin: 20px auto; width: 25rem; background: rgb(93, 95, 104)">
@@ -81,6 +139,14 @@
                 click: [],
                 showSurvey: Boolean,
                 siding: String,
+                Fname: "",
+                Lname: "",
+                primaryPhone: "",
+                secPhone: "",
+                Email: "",
+                custAdress: "", custCity: "", custZip: "", custState: "",
+                jobAdress: "", jobCity: "", jobZip: "", jobState: "",
+
             },
             created: function () {
                 axios.get('/polls')
@@ -112,6 +178,13 @@
                     console.log(hello);
                     console.log("The send data function if being called", number);
                     console.log("shoe the survey", this.showSurvey);
+                    console.log(this.Fname);
+                    console.log(this.Lname);
+                    console.log(this.primaryPhone);
+                    console.log(this.secPhone);
+                    console.log(this.Email);
+                    console.log(this.custAdress, this.custCity, this.custZip, this.custState);
+                    console.log(this.jobAdress, this.jobCity, this.jobZip, this.jobState);
                     this.showSurvey = !this.showSurvey;
                 },
                 UpdatePoll: function (index) {
