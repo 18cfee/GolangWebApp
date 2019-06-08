@@ -1,0 +1,18 @@
+<h1>{{.PageTitle}}<h1>
+<ul>
+    {{range .Todos}}
+        {{if .Done}}
+            <li class="done">{{.Title}} done </li>
+        {{else}}
+            <li>{{.Title}}</li>
+        {{end}}
+    {{end}}
+</ul>
+
+{{range .Todos}}
+    <input type="radio"  name="enum" value={{.Title}} checked> {{.Title}}<br>
+{{end}}
+<input type="radio"  name="enum" value="male" checked> Male<br>
+<input type="radio"  name="enum" value="female"> Female<br>
+<input type="radio"  name="enum" value="other"> Other<br>
+<input type="submit">
