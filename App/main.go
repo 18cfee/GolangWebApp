@@ -36,7 +36,7 @@ func startHTTPServer() *http.Server {
 
 	srv := &http.Server{Addr: port}
 
-	fs := http.FileServer(http.Dir("Home/FrontEnd"))
+	fs := http.FileServer(http.Dir("BasicCustomerInfo/FrontEnd"))
 	http.Handle("/", fs)
 
 	go func() {
