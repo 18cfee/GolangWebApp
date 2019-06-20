@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"text/template"
 	//_ "github.com/mattn/go-sqlite3"
 )
 
@@ -38,6 +39,8 @@ func startHTTPServer() *http.Server {
 
 	fs := http.FileServer(http.Dir("BasicCustomerInfo/FrontEnd"))
 	http.Handle("/", fs)
+
+	http.HandleFunc("/print/", print)
 
 	go func() {
 		// returns ErrServerClosed on graceful close
@@ -74,4 +77,18 @@ func main() {
 	}
 
 	log.Printf("main: done. exiting")
+}
+
+func print(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("method:", r.Method) //get request method
+	if r.Method == "GET" {
+		t, _ := template.ParseFiles("index.html")
+		t.Execute(w, nil)
+	} else {
+		r.ParseForm()
+		// logic part of log in
+		fmt.Println("firstname:", r.Form["fName"])
+		fmt.Println("lastname:", r.Form["lName"])
+		fmt.Println("email", r.Form["email"])
+	}
 }
