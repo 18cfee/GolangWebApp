@@ -1,13 +1,13 @@
 package main
 
 import (
+	"GolangWebApp/App/form"
 	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
-	//_ "github.com/mattn/go-sqlite3"
 )
 
 func init() {
@@ -36,8 +36,10 @@ func startHTTPServer() *http.Server {
 
 	srv := &http.Server{Addr: port}
 
-	fs := http.FileServer(http.Dir("Home/FrontEnd"))
+	fs := http.FileServer(http.Dir("FrontEnd"))
 	http.Handle("/", fs)
+	http.HandleFunc("/updateForm", form.Put)
+	http.HandleFunc("/getFormInfo", form.Get)
 
 	go func() {
 		// returns ErrServerClosed on graceful close
