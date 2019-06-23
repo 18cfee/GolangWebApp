@@ -21,7 +21,8 @@
         },
         methods: {
             createV1: function() {
-                window.location.href = 'http://localhost:8081/FormV1.html?formNum=' + this.counter;
+                // pass everything this needs like userId etc... then stubbing is done
+                window.location.href = 'http://localhost:8081/FormV1.html?userId=test&formId=' + this.counter;
             }
         }
     });

@@ -6,7 +6,10 @@
             <a href="BasicCustomerInfo.html">BasicCustomerInfo</a>
             <a href="FormSelection.html">FormSelection</a>
     </body>
-    <div id="exercise">
+    <div id="formV1">
+        <div>
+            <p>userId: {{userId}} and formId: {{formId}}</p>
+        </div>
         <div>
             <button v-on:click="editData"> Edit</button>
         </div>
@@ -14,10 +17,10 @@
             <button v-on:click="resetEdit"> Reset Edit</button>
         </div>
         <div v-if="edit">
-            <input type="text" v-model="testValueOne">
+            <input type="text" v-model="jsonPayload">
         </div>
         <div v-else>
-            <p>{{testValueOne}}</p>
+            <p>{{jsonPayload}}</p>
         </div>
         <div v-if="edit">
             <button v-on:click="submit"> Submit</button>
@@ -29,16 +32,17 @@
 <script src="https://npmcdn.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
+var urlParams = new URLSearchParams(window.location.search);
 new Vue({
-    el: '#exercise',
+    el: '#formV1',
     data: {
-        edit: true,
-        testValueOne: window.location,
-        testValueTwo: '',
-        listNums: []
+        edit: false,
+        jsonPayload: "",
+        formId: urlParams.get('formId'),
+        userId: urlParams.get('userId'),
     },
     created: function() {
-        this.initData();
+        this.initJson();
     },
     methods: {
         editData: function() {
@@ -52,14 +56,14 @@ new Vue({
         },
         resetEdit: function() {
             if (confirm(`Do you want to erase all edits since the edit button was pressed permanently?`)) {
-                this.initData();
+                this.initJson();
             }
         },
         submit: function() {
-            alert(this.testValueOne, this.testValueTwo, this.listNums);
+            alert(this.jsonPayload);
         },
-        initData: function() {
-            alert("init func was called");
+        initJson: function() {
+            this.jsonPayload = "stub values";
         },
     }
 });
