@@ -1,9 +1,67 @@
 <!DOCTYPE html>
-    <html>
-        <body>
-                <a href="index.html">HomePage</a>
-                <a href="CustomerSearch.html">CustomerSearch</a>
-                <a href="BasicCustomerInfo.html">BasicCustomerInfo</a>
-                <a href="FormSelection.html">FormSelection</a>
-        </body>
-    </html>
+<html lang="en">
+    <body>
+            <a href="index.html">HomePage</a>
+            <a href="CustomerSearch.html">CustomerSearch</a>
+            <a href="BasicCustomerInfo.html">BasicCustomerInfo</a>
+            <a href="FormSelection.html">FormSelection</a>
+    </body>
+    <div id="exercise">
+        <div>
+            <button v-on:click="editData"> Edit</button>
+        </div>
+        <div v-if="edit">
+            <button v-on:click="resetEdit"> Reset Edit</button>
+        </div>
+        <div v-if="edit">
+            <input type="text" v-model="testValueOne">
+        </div>
+        <div v-else>
+            <p>{{testValueOne}}</p>
+        </div>
+        <div v-if="edit">
+            <button v-on:click="submit"> Submit</button>
+        </div>
+    </div>
+</html>
+
+
+<script src="https://npmcdn.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+new Vue({
+    el: '#exercise',
+    data: {
+        edit: true,
+        testValueOne: window.location,
+        testValueTwo: '',
+        listNums: []
+    },
+    created: function() {
+        this.initData();
+    },
+    methods: {
+        editData: function() {
+            if (this.edit == true) {
+                if (confirm("Do you want to leave edit mode and submit changes?")) {
+                    this.edit = false;
+                }
+            } else {
+                this.edit = true;
+            }
+        },
+        resetEdit: function() {
+            if (confirm(`Do you want to erase all edits since the edit button was pressed permanently?`)) {
+                this.initData();
+            }
+        },
+        submit: function() {
+            alert(this.testValueOne, this.testValueTwo, this.listNums);
+        },
+        initData: function() {
+            alert("init func was called");
+        },
+    }
+});
+// maybe have the data interactively change on other forms  when someone submits
+</script>
