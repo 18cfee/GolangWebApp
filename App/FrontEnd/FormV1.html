@@ -8,7 +8,7 @@
     </body>
     <div id="formV1">
         <div>
-            <p>userId: {{userId}} and formId: {{formId}}</p>
+            <p>clientId: {{clientId}} and formId: {{formId}}</p>
         </div>
         <div>
             <button v-on:click="editData"> Edit</button>
@@ -39,7 +39,7 @@ new Vue({
         edit: false,
         jsonPayload: "",
         formId: urlParams.get('formId'),
-        userId: urlParams.get('userId'),
+        clientId: urlParams.get('userId'),
     },
     created: function() {
         this.initJson();
