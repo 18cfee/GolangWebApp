@@ -1,0 +1,42 @@
+header{
+    text-align: center;
+    color: #108b58;
+    font-size: 50px;
+}
+
+form{
+    border: 5px solid #108b58;
+    border-radius: 15px;
+    padding: 50px;
+    margin-left: 300px;
+    margin-right: 300px;
+    margin-top: 5px;
+    align-content: auto;
+
+
+}
+
+body{
+    align-content: center;
+    background-color: ivory;
+}
+ label, input {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.5em;
+    padding: 10px;
+}
+
+input[type=text] {
+    width: 100%
+}
+
+input[type=submit]{
+    margin: 1.5em;
+}
+
+label{
+    text-align: left;
+    font-size: 2em;
+}

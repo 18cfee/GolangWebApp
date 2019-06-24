@@ -1,9 +1,30 @@
 <!DOCTYPE html>
-    <html>
+    <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="stylesheets/style.css"> 
+        <title>The Cabin Form</title>
+        <header>RiverSide Cabins Form</header>
+       </head>
+
         <body>
+                <form action="/print/" method="POST">
+                    <label for="fName">First Name:</label>
+                    <input type="text" name="fName" placeholder="First Name...">
+    
+                    <label for="lName">Last Name: </label>
+                    <input type="text" name="lName" placeholder="Last Name...">
+    
+                    <label for="email">Email:</label>
+                    <input type="text" name="email">
+    
+                    <input type="submit" name="submit">
+                </form>
+                <br>
                 <a href="index.html">HomePage</a>
                 <a href="CustomerSearch.html">CustomerSearch</a>
                 <a href="FormSelection.html">FormSelection</a>
                 <a href="FormV1.html">FormV1</a>
+
         </body>
     </html>
