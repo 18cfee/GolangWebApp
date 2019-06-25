@@ -1,9 +1,29 @@
 <!DOCTYPE html>
-    <html>
-        <body>
-                <a href="index.html">HomePage</a>
-                <a href="CustomerSearch.html">CustomerSearch</a>
-                <a href="BasicCustomerInfo.html">BasicCustomerInfo</a>
-                <a href="FormV1.html">FormV1</a>
-        </body>
-    </html>
+<html>
+    <body>
+        <a href="index.html">HomePage</a>
+        <a href="CustomerSearch.html">CustomerSearch</a>
+        <a href="BasicCustomerInfo.html">BasicCustomerInfo</a>
+        <a href="FormV1.html">FormV1</a>
+    </body>
+    <div id="forms-1">
+        <button v-on:click="createV1">Start Form V1 with Random Id</button>
+        <p>Random Id: {{counter}}</p>
+    </div>
+</html>
+
+<script src="https://npmcdn.com/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: '#forms-1',
+        data: {
+            counter: Math.floor(Math.random() * 20000)
+        },
+        methods: {
+            createV1: function() {
+                // pass everything this needs like userId etc... then stubbing is done
+                window.location.href = 'http://localhost:8081/FormV1.html?userId=test&formId=' + this.counter;
+            }
+        }
+    });
+</script>
