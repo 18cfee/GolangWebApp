@@ -17,10 +17,12 @@
             <button v-on:click="resetEdit"> Reset Edit</button>
         </div>
         <div v-if="edit">
-            <input type="text" v-model="jsonPayload">
+            <input type="text" v-model="jsonPayload.email">
+            <input type="text" v-model="jsonPayload.address">
         </div>
         <div v-else>
-            <p>{{jsonPayload}}</p>
+            <p>{{jsonPayload.email}}</p>
+            <p>{{jsonPayload.address}}</p>
         </div>
         <div v-if="edit">
             <button v-on:click="submit"> Submit</button>
@@ -37,7 +39,10 @@ new Vue({
     el: '#formV1',
     data: {
         edit: false,
-        jsonPayload: "",
+        jsonPayload: {
+            email: "",
+            address: "",
+        },
         formId: urlParams.get('formId'),
         clientId: urlParams.get('userId'),
     },
