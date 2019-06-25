@@ -34,6 +34,7 @@ func Get(w http.ResponseWriter, req *http.Request) {
 	formId, err := strconv.Atoi(req.URL.Query().Get("formId"))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 	json, exists := forms[formId]
 	if !exists {
