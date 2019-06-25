@@ -19,10 +19,12 @@
         <div v-if="edit">
             <input type="text" v-model="jsonPayload.email">
             <input type="text" v-model="jsonPayload.address">
+            <input type="text" v-model="jsonPayload.var3">
         </div>
         <div v-else>
             <p>{{jsonPayload.email}}</p>
             <p>{{jsonPayload.address}}</p>
+            <p>{{jsonPayload.var3}}</p>
         </div>
         <div v-if="edit">
             <button v-on:click="submit"> Submit</button>
@@ -42,6 +44,7 @@ new Vue({
         jsonPayload: {
             email: "",
             address: "",
+            var3: "",
         },
         formId: urlParams.get('formId'),
         clientId: urlParams.get('userId'),
