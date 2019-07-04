@@ -33,7 +33,9 @@ type Customer struct {
 	Val int
 }
 
-func main() {
+var client *mongo.Client
+
+func InitMongo() {
 	ctx := context.TODO()
 	pw, ok := os.LookupEnv("mongo_psw")
 	username, ok = os.LookupEnv("mongoUserName")
@@ -48,7 +50,8 @@ func main() {
 
 	// Set client options and connect
 	clientOptions := options.Client().ApplyURI(mongoURI)
-	client, err := mongo.Connect(ctx, clientOptions)
+	var err error
+	client, err = mongo.Connect(ctx, clientOptions)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -60,11 +63,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	// num2 := 2
-	// fmt.Printf("%T", num2)
-
 	fmt.Println("Connected to MongoDB!")
+}
 
+// func CreateCustomer(id int) error {
+
+// }
+
+func GetNextCustId() (int, error) {
 	collection := client.Database("cabin").Collection("counts")
 
 	num := Customer{0}
@@ -83,19 +89,30 @@ func main() {
 	// create a value into which the result can be decoded
 	var result Counts
 
-	err = collection.FindOne(context.TODO(), num).Decode(&result)
+	err := collection.FindOne(context.TODO(), num).Decode(&result)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Printf("Found a single document: %+v\n", result)
 
-	//fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+	return result.Val, nil
+}
 
-	err = client.Disconnect(context.TODO())
-
+func CloseMongo() {
+	err := client.Disconnect(context.TODO())
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Connection to MongoDB closed.")
+}
+
+func main() {
+	InitMongo()
+	id, err := GetNextCustId()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("the id is ", id)
+	CloseMongo()
 }
