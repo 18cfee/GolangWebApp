@@ -1,4 +1,4 @@
-package main
+package dao
 
 import (
 	"context"
@@ -19,21 +19,15 @@ type Trainer struct {
 	Age  int
 	City string
 }
-type Counts struct {
-	VarName string
-	Val     int
-	Rando   string
-}
-
-type Select struct {
-	VarName string
-}
-
 type Customer struct {
-	Val int
+	Id int
 }
 
-func main() {
+func GetNextId() (int, error) {
+	return 0, error
+}
+
+func init() {
 	ctx := context.TODO()
 	pw, ok := os.LookupEnv("mongo_psw")
 	username, ok = os.LookupEnv("mongoUserName")
@@ -60,14 +54,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	// num2 := 2
-	// fmt.Printf("%T", num2)
-
 	fmt.Println("Connected to MongoDB!")
 
-	collection := client.Database("cabin").Collection("counts")
+	collection := client.Database("cabin").Collection("customers")
 
-	num := Customer{0}
+	num := Customer{1}
 	//ash := Trainer{"Carl", 10, "Pallet Town"}
 	//misty := Trainer{"Misty", 10, "Cerulean City"}
 	//brock := Trainer{"Brock", 15, "Pewter City"}
@@ -81,7 +72,7 @@ func main() {
 	// }
 
 	// create a value into which the result can be decoded
-	var result Counts
+	var result Customer
 
 	err = collection.FindOne(context.TODO(), num).Decode(&result)
 	if err != nil {

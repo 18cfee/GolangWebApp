@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GolangWebApp/App/customers"
 	"GolangWebApp/App/form"
 	"context"
 	"fmt"
@@ -40,6 +41,7 @@ func startHTTPServer() *http.Server {
 	http.Handle("/", fs)
 	http.HandleFunc("/updateForm", form.Put)
 	http.HandleFunc("/getFormInfo", form.Get)
+	http.HandleFunc("/getNewCustomer", customers.Create)
 
 	go func() {
 		// returns ErrServerClosed on graceful close

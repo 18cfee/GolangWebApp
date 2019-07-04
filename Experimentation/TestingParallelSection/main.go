@@ -33,11 +33,13 @@ func main() {
 }
 
 func updateCount(wg *sync.WaitGroup, mu *sync.Mutex) {
+	fmt.Println("starting func")
 	for i := 0; i < 100; i++ {
 		mu.Lock()
 		count++
 		mu.Unlock()
 		runtime.Gosched()
 	}
+	fmt.Println("ending func")
 	wg.Done()
 }
