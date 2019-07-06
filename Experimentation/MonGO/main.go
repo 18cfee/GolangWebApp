@@ -95,7 +95,7 @@ func GetHighestCustId() int {
 		// create a value into which the single document can be decoded
 		var elem Trainer
 		err := cur.Decode(&elem)
-		fmt.Println(elem)
+		fmt.Println(elem.Id)
 		if err != nil {
 			log.Fatal(err)
 		}
