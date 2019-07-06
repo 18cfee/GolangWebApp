@@ -6,6 +6,10 @@ import (
 	"log"
 	"os"
 
+<<<<<<< HEAD
+=======
+	"go.mongodb.org/mongo-driver/bson"
+>>>>>>> temp
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -18,6 +22,10 @@ type Trainer struct {
 	Name string
 	Age  int
 	City string
+<<<<<<< HEAD
+=======
+	Id   int
+>>>>>>> temp
 }
 type Counts struct {
 	VarName string
@@ -70,6 +78,51 @@ func InitMongo() {
 
 // }
 
+<<<<<<< HEAD
+=======
+func GetHighestCustId() int {
+	collection := client.Database("cabin").Collection("customers")
+	// Pass these options to the Find method
+	findOptions := options.Find()
+	findOptions.SetSort(bson.M{"id": -1})
+	findOptions.SetLimit(1)
+
+	// Here's an array in which you can store the decoded documents
+	var results []*Trainer
+
+	// Passing bson.D{{}} as the filter matches all documents in the collection
+	cur, err := collection.Find(context.TODO(), bson.D{{}}, findOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Finding multiple documents returns a cursor
+	// Iterating through the cursor allows us to decode documents one at a time
+	for cur.Next(context.TODO()) {
+
+		// create a value into which the single document can be decoded
+		var elem Trainer
+		err := cur.Decode(&elem)
+		fmt.Println(elem)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		results = append(results, &elem)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	// Close the cursor once finished
+	cur.Close(context.TODO())
+
+	fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
+	return 1
+}
+
+>>>>>>> temp
 func GetNextCustId() (int, error) {
 	collection := client.Database("cabin").Collection("counts")
 
@@ -109,10 +162,14 @@ func CloseMongo() {
 
 func main() {
 	InitMongo()
+<<<<<<< HEAD
 	id, err := GetNextCustId()
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("the id is ", id)
+=======
+	fmt.Println(GetHighestCustId())
+>>>>>>> temp
 	CloseMongo()
 }
