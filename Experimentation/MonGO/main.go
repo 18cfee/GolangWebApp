@@ -6,10 +6,7 @@ import (
 	"log"
 	"os"
 
-<<<<<<< HEAD
-=======
 	"go.mongodb.org/mongo-driver/bson"
->>>>>>> temp
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -22,10 +19,7 @@ type Trainer struct {
 	Name string
 	Age  int
 	City string
-<<<<<<< HEAD
-=======
 	Id   int
->>>>>>> temp
 }
 type Counts struct {
 	VarName string
@@ -78,8 +72,6 @@ func InitMongo() {
 
 // }
 
-<<<<<<< HEAD
-=======
 func GetHighestCustId() int {
 	collection := client.Database("cabin").Collection("customers")
 	// Pass these options to the Find method
@@ -122,7 +114,6 @@ func GetHighestCustId() int {
 	return 1
 }
 
->>>>>>> temp
 func GetNextCustId() (int, error) {
 	collection := client.Database("cabin").Collection("counts")
 
@@ -162,14 +153,6 @@ func CloseMongo() {
 
 func main() {
 	InitMongo()
-<<<<<<< HEAD
-	id, err := GetNextCustId()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("the id is ", id)
-=======
 	fmt.Println(GetHighestCustId())
->>>>>>> temp
 	CloseMongo()
 }
