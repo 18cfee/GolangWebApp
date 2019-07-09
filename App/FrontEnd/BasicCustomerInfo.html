@@ -2,31 +2,119 @@
     <html lang="en">
         <head>
         <meta charset="UTF-8">
+        <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <link rel="stylesheet" href="stylesheets/style.css"> 
         <title>The Cabin Form</title>
        </head>
-       <img src="images/Riverside Cabins.png" alt="LOGO" width="250" height="250" style="position: absolute">    
+          
         <body>
                 <header> 
                         <div>Riverside Cabins Form</div>                
                 </header>
-                <form action="/print/" method="POST">
-                    <label for="fName">First Name:</label>
-                    <input type="text" name="fName" placeholder="First Name...">
-    
-                    <label for="lName">Last Name: </label>
-                    <input type="text" name="lName" placeholder="Last Name...">
-    
-                    <label for="email">Email:</label>
-                    <input type="text" name="email">
-    
-                    <input type="submit" name="submit">
-                </form>
-                <br>
                 <a href="index.html">HomePage</a>
                 <a href="CustomerSearch.html">CustomerSearch</a>
                 <a href="FormSelection.html">FormSelection</a>
                 <a href="FormV1.html">FormV1</a>
-
         </body>
+                <div id="formV2">
+                    
+                    <div>
+                        <p>clientId: {{clientId}} and formId: {{formId}}</p>
+                    </div>
+
+                    <div>
+                    <button v-on:click="editData"> Edit </button>
+                    </div>
+
+                    <div v-if="edit">
+                        <button v-on:click="resetEdit"> Reset Edit</button>
+                    </div>
+
+                    <div class="formInfo"  v-if="edit">
+                        <label for="fName">First Name:</label>
+                        <input type="text" name="fName" placeholder="First Name..." v-model="jsonPayload.fName">
+        
+                        <label for="lName">Last Name: </label>
+                        <input type="text" name="lName" placeholder="Last Name..." v-model="jsonPayload.lName">
+        
+                        <label for="email">Email:</label>
+                        <input type="text" name="email" v-model="jsonPayload.email">   
+                    </div>
+                    <div class="formInfo" v-else>
+                        <label for="fName">First Name:</label>
+                        <input type="text" name="fName" v-model="jsonPayload.fName" readonly>
+
+                        <label for="lName">Last Name: </label>
+                        <input type="text" name="lName" v-model="jsonPayload.lName" readonly>
+
+                        <label for="email">Email:</label>
+                        <input type="text" name="email" v-model="jsonPayload.email" readonly> 
+                    </div>
+                    <div v-if="edit">
+                        <button v-on:click="submit">submit</button>
+                    </div>
+                </div>
+                
+        
+                <script>
+                var urlParams = new URLSearchParams(window.location.search);
+                new Vue({
+                el: '#formV2',
+                data: {
+                    edit: false,
+                    jsonPayload: {
+                        fName: "",
+                        lName: "",
+                        email: "",
+                    },
+                    formId: urlParams.get('formId'),
+                    clientId: urlParams.get('userId'),
+                },
+                created: function() {
+                    this.initJson();
+                },
+                methods: {
+                    editData: function() {
+                        if (this.edit == true) {
+                            if (confirm("Do you want to leave edit mode and submit changes?")) {
+                                this.edit = false;
+                            }
+                        } else {
+                            this.edit = true;
+                        }
+                    },
+                    resetEdit: function() {
+                        if (confirm(`Do you want to erase all edits since the edit button was pressed permanently?`)) {
+                            this.initJson();
+                        }
+                    },
+                    submit: function() {
+                        axios.put('/updateForm?formId=' + this.formId, this.jsonPayload)
+                            .then(res => {
+                                console.log('it was a success');
+                            })
+                            .catch(error => {
+                                console.log('something went wrong');
+                            })
+                    },
+                    initJson: function() {
+                        axios.get('/getFormInfo?formId=' + this.formId)
+                            .then(res => {
+                                console.log("success " + res.data);
+                                // 204 is when there was a response but there was no data 
+                                if (res.status != 204) {
+                                    console.log("setting the data");
+                                    this.jsonPayload = res.data;
+                                }
+                            })
+                            .catch(error => {
+                                console.log("failure");
+                            })
+                    },
+                }
+            });
+                            </script>
+
+        
     </html>

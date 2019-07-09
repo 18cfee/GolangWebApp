@@ -54,7 +54,7 @@ header{
     font-size: 50px;
 }
 
-form{
+div.formInfo {
     border: 5px solid #108b58;
     border-radius: 15px;
     padding: 50px;
@@ -62,14 +62,13 @@ form{
     margin-right: 300px;
     margin-top: 5px;
     align-content: auto;
-
-
 }
 
 body{
     align-content: center;
     background-color: ivory;
 }
+
  label, input {
     display: block;
     margin-left: auto;
