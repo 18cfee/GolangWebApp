@@ -2,6 +2,7 @@ package main
 
 import (
 	"GolangWebApp/App/customers"
+	"GolangWebApp/App/dao"
 	"GolangWebApp/App/form"
 	"context"
 	"fmt"
@@ -12,6 +13,7 @@ import (
 )
 
 func init() {
+	dao.InitMongo()
 }
 
 func portFromArgs() string {
@@ -69,6 +71,7 @@ func main() {
 	fmt.Scanf("%v", &anything)
 
 	log.Printf("main: stopping HTTP server")
+	dao.CloseMongo()
 
 	// now close the server gracefully ("shutdown")
 	// timeout could be given with a proper context

@@ -3,8 +3,9 @@ package main
 import "fmt"
 
 type innerObject struct {
-	name string
-	age  int
+	name     string
+	age      int
+	ranomVar int
 }
 
 type inside interface {
@@ -43,7 +44,7 @@ func testAcceptInnerObject(i inside) {
 }
 
 func main() {
-	test := innerObject{"carl", 5}
+	test := innerObject{name: "carl", age: 5}
 	test.printAge()
 	outerO := outerObject{"fee", "outer", test}
 	fmt.Println(outerO.innerObject.name)

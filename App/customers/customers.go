@@ -18,14 +18,14 @@ func Create(w http.ResponseWriter, req *http.Request) {
 	}
 
 	mu.Lock()
-	newId, error := dao.GetNextId()
+	newId := dao.GetHighestCustId()
 	mu.Unlock()
 
-	if error != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([byte](error))
-		return
-	}
+	// if error != nil {
+	// 	w.WriteHeader(http.StatusInternalServerError)
+	// 	w.Write([byte](error))
+	// 	return
+	// }
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(strconv.Itoa(newId)))

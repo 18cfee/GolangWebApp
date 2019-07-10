@@ -6,28 +6,16 @@ import (
 	"log"
 	"os"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var username string
 var host1 string // of the form foo.mongodb.net
+var client *mongo.Client
 
-// You will be using this Trainer type later in the program
-type Trainer struct {
-	Name string
-	Age  int
-	City string
-}
-type Customer struct {
-	Id int
-}
-
-func GetNextId() (int, error) {
-	return 0, error
-}
-
-func init() {
+func InitMongo() {
 	ctx := context.TODO()
 	pw, ok := os.LookupEnv("mongo_psw")
 	username, ok = os.LookupEnv("mongoUserName")
@@ -42,7 +30,8 @@ func init() {
 
 	// Set client options and connect
 	clientOptions := options.Client().ApplyURI(mongoURI)
-	client, err := mongo.Connect(ctx, clientOptions)
+	var err error
+	client, err = mongo.Connect(ctx, clientOptions)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -55,36 +44,60 @@ func init() {
 	}
 
 	fmt.Println("Connected to MongoDB!")
+}
 
+type Customer struct {
+	Name string
+	Age  int
+	City string
+	Id   int
+}
+
+func GetHighestCustId() int {
 	collection := client.Database("cabin").Collection("customers")
+	// Pass these options to the Find method
+	findOptions := options.Find()
+	findOptions.SetSort(bson.M{"id": -1})
+	findOptions.SetLimit(1)
 
-	num := Customer{1}
-	//ash := Trainer{"Carl", 10, "Pallet Town"}
-	//misty := Trainer{"Misty", 10, "Cerulean City"}
-	//brock := Trainer{"Brock", 15, "Pewter City"}
+	// Here's an array in which you can store the decoded documents
+	var results []*Customer
 
-	// for i := 0; i < 20; i++ {
-	// 	//insertResult, err := collection.InsertOne(context.TODO(), ash)
-	// 	collection.InsertOne(context.TODO(), ash)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// }
-
-	// create a value into which the result can be decoded
-	var result Customer
-
-	err = collection.FindOne(context.TODO(), num).Decode(&result)
+	// Passing bson.D{{}} as the filter matches all documents in the collection
+	cur, err := collection.Find(context.TODO(), bson.D{{}}, findOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Found a single document: %+v\n", result)
+	var elem Customer
+	// Finding multiple documents returns a cursor
+	// Iterating through the cursor allows us to decode documents one at a time
+	for cur.Next(context.TODO()) {
 
-	//fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+		// create a value into which the single document can be decoded
 
-	err = client.Disconnect(context.TODO())
+		err := cur.Decode(&elem)
+		fmt.Println(elem.Id)
+		if err != nil {
+			log.Fatal(err)
+		}
 
+		results = append(results, &elem)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	// Close the cursor once finished
+	cur.Close(context.TODO())
+
+	fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
+	return elem.Id
+}
+
+func CloseMongo() {
+	err := client.Disconnect(context.TODO())
 	if err != nil {
 		log.Fatal(err)
 	}
