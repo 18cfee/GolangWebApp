@@ -32,14 +32,26 @@
                     </div>
 
                     <div class="formInfo"  v-if="edit">
-                        <label for="fName">First Name:</label>
-                        <input type="text" name="fName" placeholder="First Name..." v-model="jsonPayload.fName">
-        
-                        <label for="lName">Last Name: </label>
-                        <input type="text" name="lName" placeholder="Last Name..." v-model="jsonPayload.lName">
-        
-                        <label for="email">Email:</label>
-                        <input type="text" name="email" v-model="jsonPayload.email">   
+
+                        <div style="position: relative">
+                            <div for="fName" class="formLabelA">First Name:</div>
+                            <div for="lName" class="formLabelB">Last Name: </div>
+                        </div>
+                        <br>
+                        <div style="position: relative" >
+                            <input type="text" name="fName" placeholder="First Name..." v-model="jsonPayload.fName" class="formInputA">
+                            <input type="text" name="lName" placeholder="Last Name..." v-model="jsonPayload.lName" class="formInputB">
+                        </div>
+                        <br>
+                        <div style="position: relative">
+                            <div for="email" class="formLabelA">Primary Email:</div>
+                            <div for="email" class="formLabelB">Secondary Email:</div>
+                        </div>
+                        <br>
+                        <div style="position: relative">
+                            <input type="text" name="email" v-model="jsonPayload.email" class="formInputA">
+                            <input type="text" name="email" v-model="jsonPayload.secondEmail" class="formInputB">    
+                        </div>
                     </div>
                     <div class="formInfo" v-else>
                         <label for="fName">First Name:</label>
@@ -67,6 +79,7 @@
                         fName: "",
                         lName: "",
                         email: "",
+                        secondEmail: "",
                     },
                     formId: urlParams.get('formId'),
                     clientId: urlParams.get('userId'),
