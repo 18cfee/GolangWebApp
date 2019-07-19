@@ -6,9 +6,9 @@ import (
 	"log"
 	"os"
 
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"gopkg.in/mgo.v2/bson"
 )
 
 var username string
@@ -53,47 +53,41 @@ type Customer struct {
 	Id   int
 }
 
-func GetHighestCustId() int {
+func GetHighestCustId() (int, error) {
 	collection := client.Database("cabin").Collection("customers")
-	// Pass these options to the Find method
 	findOptions := options.Find()
 	findOptions.SetSort(bson.M{"id": -1})
 	findOptions.SetLimit(1)
 
-	// Here's an array in which you can store the decoded documents
-	var results []*Customer
-
-	// Passing bson.D{{}} as the filter matches all documents in the collection
-	cur, err := collection.Find(context.TODO(), bson.D{{}}, findOptions)
+	cur, err := collection.Find(context.TODO(), bson.M{}, findOptions)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("line 64 failure")
+		return 0, err
 	}
 
-	var elem Customer
-	// Finding multiple documents returns a cursor
-	// Iterating through the cursor allows us to decode documents one at a time
-	for cur.Next(context.TODO()) {
+	var cust Customer
 
-		// create a value into which the single document can be decoded
-
-		err := cur.Decode(&elem)
-		fmt.Println(elem.Id)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		results = append(results, &elem)
+	// could iterate through results, but there is only one now
+	cur.Next(context.TODO())
+	err = cur.Decode(&cust)
+	fmt.Println(cust.Id)
+	if err != nil {
+		return 0, err
 	}
 
-	if err := cur.Err(); err != nil {
-		log.Fatal(err)
-	}
+	err = cur.Err()
 
-	// Close the cursor once finished
 	cur.Close(context.TODO())
 
-	fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
-	return elem.Id
+	return cust.Id, err
+}
+
+func CreateNewCust(id int) error {
+	collection := client.Database("cabin").Collection("customers")
+	newCust := Customer{Id: id}
+	result, err := collection.InsertOne(context.TODO(), newCust)
+	fmt.Println(result)
+	return err
 }
 
 func CloseMongo() {

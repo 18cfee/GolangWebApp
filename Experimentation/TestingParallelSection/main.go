@@ -32,10 +32,18 @@ func main() {
 	fmt.Println(count)
 }
 
+var happenOnce bool
+
 func updateCount(wg *sync.WaitGroup, mu *sync.Mutex) {
 	fmt.Println("starting func")
 	for i := 0; i < 100; i++ {
 		mu.Lock()
+		if !happenOnce && i == 100 {
+			happenOnce = true
+			wg.Done()
+			fmt.Println("ending the one time ender")
+			return
+		}
 		count++
 		mu.Unlock()
 		runtime.Gosched()

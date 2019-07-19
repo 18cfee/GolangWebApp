@@ -10,24 +10,21 @@
             <header> 
                     <div>Riverside Cabins Form</div>                
             </header>
-            <form action="/print/" method="POST">
-
+            <body>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
                 <label for="fName">Search:</label>
-                <Dropdown
-                    :options="[{ id: 1, name: 'Option 1'}, { id: 2, name: 'Option 2'}]"
-                    v-on:selected="validateSelection"
-                    v-on:filter="getDropdownValues"
-                    :disabled="false"
-                    name="zipcode"
-                    :maxItem="10"
-                    placeholder="Please select an option">
-                </Dropdown>
                 <input type="text" name="fName" placeholder="name...">
-                <br>
-                <br>
                 <button v-on:click="createUser">Create New User</button>
-            </form>
-            <br>
+            </body>
             <a href="index.html">HomePage</a>
             <a href="BasicCustomerInfo.html">BasicCustomerInfo</a>
             <a href="FormSelection.html">FormSelection</a>
@@ -36,11 +33,7 @@
 </html>
 
 <script src="https://npmcdn.com/vue/dist/vue.js"></script>
-<script type="text/javascript" src="node_modules/vuejs/dist/vue.min.js"></script>
-<script type="text/javascript" src="node_modules/vue-simple-search-dropdown/dist/vue-simple-search-dropdown.min.js"></script>
-<script type="text/javascript">
-  Vue.use(Dropdown);
-</script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     new Vue({
         el: '#customer-search',
@@ -49,8 +42,14 @@
         },
         methods: {
             createUser: function() {
-                // pass everything this needs like userId etc... then stubbing is done
-                window.location.href = 'http://localhost:8081/FormV1.html?userId=test&formId=' + this.counter;
+                axios.get('/getNewCustomer')
+                .then(res => {
+                    // may want to switch this to #'s since this is just info for front end
+                    window.location.href = 'http://localhost:8081/BasicCustomerInfo.html?userId=' + res.data + '&formId=1';
+                })
+                .catch(error => {
+                    alert(error);
+                })
             }
         }
     });
