@@ -15,7 +15,48 @@ var username string
 var host1 string // of the form foo.mongodb.net
 var client *mongo.Client
 
-func InitMongo() {
+func RetrieveCustomers() ([]Customer, error) {
+	collection := client.Database("cabin").Collection("customers")
+	// Pass these options to the Find method
+	findOptions := options.Find()
+	findOptions.SetSort(bson.M{"id": -1})
+
+	// Here's an array in which you can store the decoded documents
+	var results []Customer
+
+	// Passing bson.M{} as the filter matches all documents in the collection
+	cur, err := collection.Find(context.TODO(), bson.M{}, findOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Finding multiple documents returns a cursor
+	// Iterating through the cursor allows us to decode documents one at a time
+	for cur.Next(context.TODO()) {
+
+		// create a value into which the single document can be decoded
+		var elem Customer
+		err := cur.Decode(&elem)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+
+		results = append(results, elem)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	// Close the cursor once finished
+	cur.Close(context.TODO())
+
+	return results, nil
+}
+
+func init() {
 	ctx := context.TODO()
 	pw, ok := os.LookupEnv("mongo_psw")
 	username, ok = os.LookupEnv("mongoUserName")
@@ -47,10 +88,9 @@ func InitMongo() {
 }
 
 type Customer struct {
-	Name string
-	Age  int
-	City string
-	Id   int
+	Name  string
+	Id    int
+	Forms string
 }
 
 func GetHighestCustId() (int, error) {

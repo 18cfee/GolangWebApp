@@ -13,7 +13,7 @@ import (
 )
 
 func init() {
-	dao.InitMongo()
+	//dao.InitMongo()
 }
 
 func portFromArgs() string {
@@ -44,6 +44,7 @@ func startHTTPServer() *http.Server {
 	http.HandleFunc("/updateForm", form.Put)
 	http.HandleFunc("/getFormInfo", form.Get)
 	http.HandleFunc("/getNewCustomer", customers.Create)
+	http.HandleFunc("/getCustomers", customers.GetById)
 
 	go func() {
 		// returns ErrServerClosed on graceful close

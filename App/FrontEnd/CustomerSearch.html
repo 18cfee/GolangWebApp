@@ -5,24 +5,19 @@
     <link rel="stylesheet" href="stylesheets/style.css"> 
     <title>The Cabin Form</title>
     </head>
-    <img src="images/Riverside Cabins.png" alt="LOGO" width="250" height="250" style="position: absolute">    
     <div id="customer-search">
             <header> 
                     <div>Riverside Cabins Form</div>                
             </header>
             <body>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
+                
                 <label for="fName">Search:</label>
                 <input type="text" name="fName" placeholder="name...">
+                <li v-for="customer in customers">
+                    {{customer}}
+                    <button v-on:click="formSelect(customer.Id)"> select cust</button>
+                </li>
+                <button v-on:click="refresh"> Refresh</button>
                 <button v-on:click="createUser">Create New User</button>
             </body>
             <a href="index.html">HomePage</a>
@@ -38,18 +33,28 @@
     new Vue({
         el: '#customer-search',
         data: {
-            counter: Math.floor(Math.random() * 20000)
+            counter: Math.floor(Math.random() * 20000),
+            customers: "",
         },
         methods: {
             createUser: function() {
                 axios.get('/getNewCustomer')
                 .then(res => {
                     // may want to switch this to #'s since this is just info for front end
-                    window.location.href = 'http://localhost:8081/BasicCustomerInfo.html?userId=' + res.data + '&formId=1';
+                    window.location.href = 'http://localhost:8081/BasicCustomerInfo.html?custId=' + res.data + '&formId=1';
                 })
                 .catch(error => {
                     alert(error);
                 })
+            },
+            refresh: function() {
+                axios.get('/getCustomers')
+                .then(res => {
+                    this.customers = res.data
+                })
+            },
+            formSelect: function(id) {
+                window.location.href = 'http://localhost:8081/BasicCustomerInfo.html?custId=' + id;
             }
         }
     });

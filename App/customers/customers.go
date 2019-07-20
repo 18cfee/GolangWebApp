@@ -2,6 +2,7 @@ package customers
 
 import (
 	"GolangWebApp/App/dao"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -35,4 +36,24 @@ func Create(w http.ResponseWriter, req *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(strconv.Itoa(newID)))
+}
+
+func GetById(w http.ResponseWriter, req *http.Request) {
+	if req.Method != "GET" {
+		fmt.Println("the method was ", req.Method)
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+
+	customers, err := dao.RetrieveCustomers()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+
+	custs, _ := json.Marshal(customers)
+	w.Write([]byte(custs))
 }
