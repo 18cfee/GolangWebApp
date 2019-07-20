@@ -12,12 +12,11 @@
             <body>
                 
                 <label for="fName">Search:</label>
-                <input type="text" name="fName" placeholder="name...">
+                <input type="text" name="fName" placeholder="Id..." v-model="idFilter" v-on:input="refresh">
                 <li v-for="customer in customers">
                     {{customer}}
                     <button v-on:click="formSelect(customer.Id)"> select cust</button>
                 </li>
-                <button v-on:click="refresh"> Refresh</button>
                 <button v-on:click="createUser">Create New User</button>
             </body>
             <a href="index.html">HomePage</a>
@@ -33,8 +32,11 @@
     new Vue({
         el: '#customer-search',
         data: {
-            counter: Math.floor(Math.random() * 20000),
+            idFilter: 1,
             customers: "",
+        },
+        created: function() {
+            this.refresh();
         },
         methods: {
             createUser: function() {
@@ -48,10 +50,12 @@
                 })
             },
             refresh: function() {
-                axios.get('/getCustomers')
-                .then(res => {
+                if (this.idFilter >= 1) {
+                    axios.get('/getCustomers?custId='+this.idFilter)
+                    .then(res => {
                     this.customers = res.data
-                })
+                    })
+                }
             },
             formSelect: function(id) {
                 window.location.href = 'http://localhost:8081/BasicCustomerInfo.html?custId=' + id;

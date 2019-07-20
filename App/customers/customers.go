@@ -45,7 +45,21 @@ func GetById(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	customers, err := dao.RetrieveCustomers()
+	id, ok := req.URL.Query()["custId"]
+
+	var custID int
+
+	if !ok {
+		fmt.Println("there was no id")
+	} else {
+		var err error
+		custID, err = strconv.Atoi(id[0])
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+
+	customers, err := dao.RetrieveCustomers(custID)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))

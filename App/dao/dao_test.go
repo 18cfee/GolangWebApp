@@ -17,7 +17,7 @@ func TestGettingHighestCustomerId(t *testing.T) {
 }
 
 func TestRetrieveCustomers(t *testing.T) {
-	total, err := RetrieveCustomers()
+	total, err := RetrieveCustomers(0)
 	if err != nil {
 		t.Error(err.Error())
 	}

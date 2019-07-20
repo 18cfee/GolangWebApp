@@ -15,11 +15,13 @@ var username string
 var host1 string // of the form foo.mongodb.net
 var client *mongo.Client
 
-func RetrieveCustomers() ([]Customer, error) {
+func RetrieveCustomers(id int) ([]Customer, error) {
 	collection := client.Database("cabin").Collection("customers")
 	// Pass these options to the Find method
 	findOptions := options.Find()
-	findOptions.SetSort(bson.M{"id": -1})
+	findOptions.SetLimit(10)
+	findOptions.SetSort(bson.M{"id": 1})
+	findOptions.SetMin(bson.M{"id": id})
 
 	// Here's an array in which you can store the decoded documents
 	var results []Customer
