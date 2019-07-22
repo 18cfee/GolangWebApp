@@ -9,8 +9,7 @@
             <header> 
                     <div>Riverside Cabins Form</div>                
             </header>
-            <body>
-                
+            <form>
                 <label for="fName">Search:</label>
                 <input type="text" name="fName" placeholder="Id..." v-model="idFilter" v-on:input="refresh">
                 <li v-for="customer in customers">
@@ -18,7 +17,7 @@
                     <button v-on:click="formSelect(customer.Id)"> select cust</button>
                 </li>
                 <button v-on:click="createUser">Create New User</button>
-            </body>
+            </form>
             <a href="index.html">HomePage</a>
             <a href="BasicCustomerInfo.html">BasicCustomerInfo</a>
             <a href="FormSelection.html">FormSelection</a>
