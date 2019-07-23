@@ -57,10 +57,11 @@ header{
 div.formInfo {
     border: 5px solid #108b58;
     border-radius: 15px;
-    padding: 50px;
+    padding: 40px;
     margin-left: 300px;
     margin-right: 300px;
-    margin-top: 5px;
+    margin-top: 2px;
+    margin-bottom: 2px;
     align-content: auto;
     line-height: 40px;
 }
@@ -93,6 +94,35 @@ div.formLabelB {
     padding: 5px;
 }
 
+div.city{
+    position: absolute;
+    height: auto;
+    left: 35%;
+    top: auto;
+    font-size: 1.5em;
+    padding: 5px;
+}
+
+div.state {
+    position: absolute;
+    height: auto;
+    left: 55%;
+    top: auto;
+    font-size: 1.5em;
+    padding: 5px;
+}
+
+div.zip {
+    position: absolute;
+    height: auto;
+    left: 75%;
+    top: auto;
+    font-size: 1.5em;
+    padding: 5px;
+}
+
+
+
 input.formInputA {
     position: absolute;
     height: auto;
@@ -109,8 +139,59 @@ input.formInputB {
     padding: 5px;
 }
 
+input.adressInput{
+    position: absolute;
+    height: auto;
+    left: auto;
+    top: auto;
+    padding: 5px;
+}
+
+input.cityInput {
+    position: absolute;
+    height: auto;
+    left: 35%;
+    top: auto;
+    padding: 5px;
+}
+
+input.stateInput {
+    position: absolute;
+    height: auto;
+    left: 55%;
+    top: auto;
+    padding: 5px;
+
+}
+
+input.zipInput {
+    position: absolute;
+    height: auto;
+    left: 75%;
+    top: auto;
+    padding: 5px;
+}
+
+
+
 input[type=text] {
+    width: 40%
+}
+
+input.adressInput[type=text]{
     width: 30%
+}
+
+input.cityInput[type=text]{
+    width: 15%
+}
+
+input.zipInput[type=text]{
+    width: 15%
+}
+
+input.stateInput[type=text]{
+    width: 15%
 }
 
 input[type=submit]{

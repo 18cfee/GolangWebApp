@@ -23,15 +23,17 @@
                         <p>clientId: {{clientId}} and formId: {{formId}}</p>
                     </div>
 
-                    <div>
-                    <button v-on:click="editData"> Edit </button>
-                    </div>
 
-                    <div v-if="edit">
+                    <div v-if="notEdit == false">
                         <button v-on:click="resetEdit"> Reset Edit</button>
                     </div>
+                    
+                    <div>
+                        <button v-on:click="editData"> edit </button>
+                    </div>
+                    <div v-if = "notEdit"> click edit to input data </div>
 
-                    <div class="formInfo"  v-if="edit">
+                    <div class="formInfo" >
 
                         <div style="position: relative">
                             <div for="fName" class="formLabelA">First Name:</div>
@@ -39,8 +41,8 @@
                         </div>
                         <br>
                         <div style="position: relative" >
-                            <input type="text" name="fName" placeholder="First Name..." v-model="jsonPayload.fName" class="formInputA">
-                            <input type="text" name="lName" placeholder="Last Name..." v-model="jsonPayload.lName" class="formInputB">
+                            <input type="text" name="fName" placeholder="First Name..." v-model="jsonPayload.fName" class="formInputA" v-bind:disabled="notEdit">
+                            <input type="text" name="lName" placeholder="Last Name..." v-model="jsonPayload.lName" class="formInputB" v-bind:disabled="notEdit">
                         </div>
                         <br>
                         <div style="position: relative">
@@ -49,21 +51,51 @@
                         </div>
                         <br>
                         <div style="position: relative">
-                            <input type="text" name="email" v-model="jsonPayload.email" class="formInputA">
-                            <input type="text" name="email" v-model="jsonPayload.secondEmail" class="formInputB">    
+                            <input type="text" name="email" v-model="jsonPayload.email" class="formInputA" v-bind:disabled="notEdit">
+                            <input type="text" name="email" v-model="jsonPayload.secondEmail" class="formInputB" v-bind:disabled="notEdit">    
                         </div>
+                        <br>
+                        <div style="position: relative">
+                            <div for="Phone" class="formLabelA">Primary Phone #:</div>
+                            <div for="Phone" class="formLabelB">Secondary Phone #:</div>
+                        </div>
+                        <br>
+                        <div style="position: relative">
+                            <input type="text" name="Phone" v-model="jsonPayload.primaryPhone" class="formInputA" v-bind:disabled="notEdit">
+                            <input type="text" name="Phone" v-model="jsonPayload.secondaryPhone" class="formInputB" v-bind:disabled="notEdit">    
+                        </div>
+                        <br>
+                        <div style="position: relative">
+                            <div for="Address" class="formLabelA">Customer Home Address:</div>
+                            <div for="Address" class="city">City:</div>
+                            <div for="Address" class="state">State:</div>
+                            <div for="Address" class="zip">Zip:</div>
+                        </div>
+                        <br>
+                        <div style="position: relative">
+                            <input type="text" name="Address" v-model="jsonPayload.homeAdress" class="adressInput" v-bind:disabled="notEdit">
+                            <input type="text" name="Address" v-model="jsonPayload.homeCity" class="cityInput" v-bind:disabled="notEdit">
+                            <input type="text" name="Address" v-model="jsonPayload.homeState" class="stateInput" v-bind:disabled="notEdit">
+                            <input type="text" name="Address" v-model="jsonPayload.homeZip" class="zipInput" v-bind:disabled="notEdit">
+                        </div>
+                        <br>
+                        <div style="position: relative">
+                            <div for="Address" class="formLabelA">Cabin Location Address:</div>
+                            <div for="Address" class="city">City:</div>
+                            <div for="Address" class="state">State:</div>
+                            <div for="Address" class="zip">Zip:</div>
+                        </div>
+                        <br>
+                        <div style="position: relative">
+                            <input type="text" name="Address" v-model="jsonPayload.jobAdress" class="adressInput" v-bind:disabled="notEdit">
+                            <input type="text" name="Address" v-model="jsonPayload.jobCity" class="cityInput" v-bind:disabled="notEdit">
+                            <input type="text" name="Address" v-model="jsonPayload.jobState" class="stateInput" v-bind:disabled="notEdit">
+                            <input type="text" name="Address" v-model="jsonPayload.jobZip" class="zipInput" v-bind:disabled="notEdit">
+                        </div>
+                        <br>
+                        <div>Hit submit to enter data</div>
                     </div>
-                    <div class="formInfo" v-else>
-                        <label for="fName">First Name:</label>
-                        <input type="text" name="fName" v-model="jsonPayload.fName" readonly>
-
-                        <label for="lName">Last Name: </label>
-                        <input type="text" name="lName" v-model="jsonPayload.lName" readonly>
-
-                        <label for="email">Email:</label>
-                        <input type="text" name="email" v-model="jsonPayload.email" readonly> 
-                    </div>
-                    <div v-if="edit">
+                    <div>
                         <button v-on:click="submit">submit</button>
                     </div>
                 </div>
@@ -74,12 +106,22 @@
                 new Vue({
                 el: '#formV2',
                 data: {
-                    edit: false,
+                    notEdit: true,
                     jsonPayload: {
                         fName: "",
                         lName: "",
                         email: "",
                         secondEmail: "",
+                        primaryPhone: "",
+                        secondaryPhone: "",
+                        homeAdress: "",
+                        homeCity: "",
+                        homeState: "",
+                        homeZip: "",
+                        jobAdress:  "",
+                        jobCity: "",
+                        jobState: "",
+                        jobZip: "",
                     },
                     formId: urlParams.get('formId'),
                     clientId: urlParams.get('userId'),
@@ -88,15 +130,15 @@
                     this.initJson();
                 },
                 methods: {
-                    editData: function() {
-                        if (this.edit == true) {
-                            if (confirm("Do you want to leave edit mode and submit changes?")) {
-                                this.edit = false;
-                            }
-                        } else {
-                            this.edit = true;
+                    editData: function(){
+                        if (this.notEdit == false){
+                            this.notEdit = true;
+                        }
+                        else {
+                            this.notEdit  = false;
                         }
                     },
+
                     resetEdit: function() {
                         if (confirm(`Do you want to erase all edits since the edit button was pressed permanently?`)) {
                             this.initJson();
@@ -110,6 +152,7 @@
                             .catch(error => {
                                 console.log('something went wrong');
                             })
+                            this.notEdit=true;
                     },
                     initJson: function() {
                         axios.get('/getFormInfo?formId=' + this.formId)
