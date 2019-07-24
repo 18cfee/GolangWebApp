@@ -1,6 +1,8 @@
 package main
 
 import (
+	"GolangWebApp/App/customers"
+	"GolangWebApp/App/dao"
 	"GolangWebApp/App/form"
 	"context"
 	"fmt"
@@ -11,6 +13,7 @@ import (
 )
 
 func init() {
+	//dao.InitMongo()
 }
 
 func portFromArgs() string {
@@ -40,6 +43,8 @@ func startHTTPServer() *http.Server {
 	http.Handle("/", fs)
 	http.HandleFunc("/updateForm", form.Put)
 	http.HandleFunc("/getFormInfo", form.Get)
+	http.HandleFunc("/getNewCustomer", customers.Create)
+	http.HandleFunc("/getCustomers", customers.GetById)
 
 	go func() {
 		// returns ErrServerClosed on graceful close
@@ -67,6 +72,7 @@ func main() {
 	fmt.Scanf("%v", &anything)
 
 	log.Printf("main: stopping HTTP server")
+	dao.CloseMongo()
 
 	// now close the server gracefully ("shutdown")
 	// timeout could be given with a proper context
