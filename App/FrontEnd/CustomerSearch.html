@@ -1,28 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="stylesheets/style.css"> 
-    <title>The Cabin Form</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="stylesheets/bulma.css">
+        <link rel="stylesheet" href="stylesheets/style.css"> 
+        <title>The Cabin Form</title>
     </head>
     <div id="customer-search">
-            <header> 
-                    <div>Riverside Cabins Form</div>                
-            </header>
+        <section class="hero is-primary">
+            <div class="hero-body">
+                <div class="container">
+                <h1 class="title has-text-centered ">
+                        Riverside Cabins Form
+                </h1>
+                </div>
+            </div>
+        </section>
+        <body><section class="section">
+            <div class="columns is-mobile is-centered">
+                <div>
+                    <input class="input is-rounded" type="text" name="fName" placeholder="Search by name or ID" v-model="idFilter" v-on:input="refresh">
+                    <div v-for="customer in customers">
+                        <a v-bind:href="'FormSelection.html?custId='+customer.Id"><strong>{{customer.Name}} {{customer.Id}}</strong></a>
+                    </div>
+                    <button v-on:click="createUser">Create New User</button>
+                </div>
+            </div>
+        </section><body>
+            
 
-                <label for="fName">Search:</label>
-                <input type="text" name="fName" placeholder="Id..." v-model="idFilter" v-on:input="refresh">
-                <li v-for="customer in customers">
-                    {{customer}}
-                    <button v-on:click="formSelect(customer.Id)"> select cust</button>
-                </li>
-                <button v-on:click="createUser">Create New User</button>
-
-            <a href="index.html">HomePage</a>
-            <a href="BasicCustomerInfo.html">BasicCustomerInfo</a>
-            <a href="FormSelection.html">FormSelection</a>
-            <a href="FormV1.html">FormV1</a>
+    </div>
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                <a href="index.html"><strong>Go Back To Home</strong></a>
+            </p>
         </div>
+    </footer>
 </html>
 
 <script src="https://npmcdn.com/vue/dist/vue.js"></script>
@@ -55,9 +70,6 @@
                     this.customers = res.data
                     })
                 }
-            },
-            formSelect: function(id) {
-                window.location.href = 'http://localhost:8081/FormSelection.html?custId=' + id;
             }
         }
     });
