@@ -90,12 +90,19 @@ func init() {
 }
 
 type Customer struct {
-	Name  string
+	First string
+	Last  string
 	Id    int
-	Forms string
+	Forms []Form
 }
 
-func GetHighestCustId() (int, error) {
+type Form struct {
+	Id   string
+	Data string
+}
+
+// GetHighestCustID returns the highest id in the db
+func GetHighestCustID() (int, error) {
 	collection := client.Database("cabin").Collection("customers")
 	findOptions := options.Find()
 	findOptions.SetSort(bson.M{"id": -1})

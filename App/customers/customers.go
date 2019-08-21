@@ -19,7 +19,7 @@ func Create(w http.ResponseWriter, req *http.Request) {
 	}
 
 	mu.Lock()
-	highID, err := dao.GetHighestCustId()
+	highID, err := dao.GetHighestCustID()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
