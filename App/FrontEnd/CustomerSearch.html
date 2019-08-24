@@ -21,7 +21,7 @@
                 <div>
                     <input class="input is-rounded" type="text" name="fName" placeholder="Search by name or ID" v-model="idFilter" v-on:input="refresh">
                     <div v-for="customer in customers">
-                        <a v-bind:href="'FormSelection.html?custId='+customer.Id"><strong>{{customer.Name}} {{customer.Id}}</strong></a>
+                        <a v-bind:href="'FormSelection.html?custId='+customer.Id"><strong>{{customer.First}} {{customer.Last}} ({{customer.Id}})</strong></a>
                     </div>
                     <button v-on:click="createUser">Create New User</button>
                 </div>

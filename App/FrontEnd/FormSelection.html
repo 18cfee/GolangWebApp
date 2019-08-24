@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <a href="index.html">HomePage</a>
-        <a href="CustomerSearch.html">CustomerSearch</a>
-        <a href="BasicCustomerInfo.html">BasicCustomerInfo</a>
-        <a href="FormV1.html">FormV1</a>
-    </body>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="stylesheets/bulma.css">
+        <title>The Cabin Form</title>
+    </head>
     <div id="forms-1">
+        <section class="hero is-primary">
+            <div class="hero-body">
+                <div class="container">
+                <h1 class="title has-text-centered ">
+                        Riverside Cabins Form
+                </h1>
+                </div>
+            </div>
+        </section>
         <button v-on:click="createV1">Start Form V1 with Random Id</button>
         <br>
         <button v-on:click="createBasicCustomerInfo"> Start Basic info with random id </button>
         <p>Random Id: {{counter}}</p>
+        </section>
+        <body><section class="section">
+            <div class="columns is-mobile is-centered">
+                <div>
+                    <input class="input is-rounded" type="text" name="fName" placeholder="Search by name or ID" v-model="idFilter" v-on:input="refresh">
+                    <div v-for="customer in customers">
+                        <a v-bind:href="'FormSelection.html?custId='+customer.Id"><strong>{{customer.Name}} {{customer.Id}}</strong></a>
+                    </div>
+                    <button v-on:click="createForm">Create New User</button>
+                </div>
+            </div>
+        </section><body>
+        {{forms[0].Id}}
     </div>
 </html>
 
@@ -19,7 +41,8 @@
     new Vue({
         el: '#forms-1',
         data: {
-            counter: Math.floor(Math.random() * 20000)
+            counter: Math.floor(Math.random() * 20000),
+            forms: [{Id:"hello"}],
         },
         methods: {
             createV1: function() {
