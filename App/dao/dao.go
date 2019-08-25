@@ -15,11 +15,11 @@ var username string
 var host1 string // of the form foo.mongodb.net
 var client *mongo.Client
 
-func RetrieveCustomers(id int) ([]Customer, error) {
+func RetrieveCustomers(id int, limit int64) ([]Customer, error) {
 	collection := client.Database("cabin").Collection("customers")
 	// Pass these options to the Find method
 	findOptions := options.Find()
-	findOptions.SetLimit(10)
+	findOptions.SetLimit(limit)
 	findOptions.SetSort(bson.M{"id": 1})
 	findOptions.SetMin(bson.M{"id": id})
 
@@ -133,7 +133,7 @@ func GetHighestCustID() (int, error) {
 
 func CreateNewCust(id int) error {
 	collection := client.Database("cabin").Collection("customers")
-	newCust := Customer{Id: id}
+	newCust := Customer{Id: id, Forms: []Form{{Id: "BasicCustomerInfo.html"}}}
 	result, err := collection.InsertOne(context.TODO(), newCust)
 	fmt.Println(result)
 	return err

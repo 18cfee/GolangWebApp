@@ -21,28 +21,47 @@
         <button v-on:click="createBasicCustomerInfo"> Start Basic info with random id </button>
         <p>Random Id: {{counter}}</p>
         </section>
+        {{customer}}
+        {{custId}}
         <body><section class="section">
-            <div class="columns is-mobile is-centered">
-                <div>
-                    <input class="input is-rounded" type="text" name="fName" placeholder="Search by name or ID" v-model="idFilter" v-on:input="refresh">
-                    <div v-for="customer in customers">
-                        <a v-bind:href="'FormSelection.html?custId='+customer.Id"><strong>{{customer.Name}} {{customer.Id}}</strong></a>
+                <div class="columns is-mobile is-centered">
+                    <div>
+                        <input class="input is-rounded" type="text" name="fName" placeholder="Search by name or ID" v-model="idFilter" v-on:input="refresh">
+                        <div v-for="form in customer.Forms">
+                            <a v-bind:href="form.Id+'?custId='+customer.Id"><strong>{{form}}</strong></a>
+                        </div>
+                        <button>Create New Form</button>
                     </div>
-                    <button v-on:click="createForm">Create New User</button>
                 </div>
-            </div>
-        </section><body>
-        {{forms[0].Id}}
+            </section><body>
     </div>
+    
+    <footer class="footer has-background-light">
+        <div class="content has-text-centered">
+            <p>
+                <a href="index.html"><strong>Go Back To Home |</strong></a>
+                <a href="CustomerSearch.html"><strong>Customer Search</strong></a>
+            </p>
+        </div>
+    </footer>
 </html>
 
 <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
+    var urlParams = new URLSearchParams(window.location.search);
     new Vue({
         el: '#forms-1',
         data: {
             counter: Math.floor(Math.random() * 20000),
-            forms: [{Id:"hello"}],
+            customer: {},
+            custId: urlParams.get('custId'),
+        },
+        created: function() {
+            axios.get('/getCustomers?custId='+this.custId +'&limit=1')
+                    .then(res => {
+                    this.customer = res.data[0] // this endpoint is used to grab a list
+                    })
         },
         methods: {
             createV1: function() {

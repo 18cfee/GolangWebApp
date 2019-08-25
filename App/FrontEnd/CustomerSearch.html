@@ -47,6 +47,7 @@
         data: {
             idFilter: 1,
             customers: "",
+            limit: 10,
         },
         created: function() {
             this.refresh();
@@ -64,7 +65,7 @@
             },
             refresh: function() {
                 if (this.idFilter >= 1) {
-                    axios.get('/getCustomers?custId='+this.idFilter)
+                    axios.get('/getCustomers?custId='+this.idFilter +'&limit='+this.limit)
                     .then(res => {
                     this.customers = res.data
                     })
