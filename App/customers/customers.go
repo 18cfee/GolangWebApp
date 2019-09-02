@@ -4,6 +4,7 @@ import (
 	"GolangWebApp/App/dao"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 	"sync"
@@ -36,6 +37,19 @@ func Create(w http.ResponseWriter, req *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(strconv.Itoa(newID)))
+}
+
+func UpdateCustomer(w http.ResponseWriter, req *http.Request) {
+	if req.Method != "POST" {
+		fmt.Println("the method was ", req.Method)
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+	data, err := ioutil.ReadAll(req.Body)
+	var cust Customer
+	json.Unmarshal(data, &cust)
+	dao.UpdateCustomer(cust)
+	w.WriteHeader(http.StatusOK)
 }
 
 func GetById(w http.ResponseWriter, req *http.Request) {

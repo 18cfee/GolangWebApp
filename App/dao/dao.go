@@ -97,6 +97,8 @@ type Customer struct {
 }
 
 type Form struct {
+	Page string
+	// Id is used to distingiush between two of the same page forms for a certain customer
 	Id   string
 	Data string
 }
@@ -133,10 +135,17 @@ func GetHighestCustID() (int, error) {
 
 func CreateNewCust(id int) error {
 	collection := client.Database("cabin").Collection("customers")
-	newCust := Customer{Id: id, Forms: []Form{{Id: "BasicCustomerInfo.html"}}}
+	newCust := Customer{Id: id, Forms: []Form{{Page: "BasicCustomerInfo.html", Id: "default"}}}
 	result, err := collection.InsertOne(context.TODO(), newCust)
 	fmt.Println(result)
 	return err
+}
+
+func UpdateCustomer(customer Customer) {
+	filter := bson.M{"id": bson.M{"$eq": customer.Id}}
+	collection := client.Database("cabin").Collection("customers")
+	result, err := collection.ReplaceOne(context.TODO(), filter, customer)
+	fmt.Println(result, err)
 }
 
 func CloseMongo() {

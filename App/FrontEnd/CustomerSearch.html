@@ -57,7 +57,7 @@
                 axios.get('/getNewCustomer')
                 .then(res => {
                     // may want to switch this to #'s since this is just info for front end
-                    window.location.href = 'http://localhost:8081/BasicCustomerInfo.html?custId=' + res.data + '&formId=1';
+                    window.location.href = 'http://localhost:8081/BasicCustomerInfo.html?custId=' + res.data + '&formId=default';
                 })
                 .catch(error => {
                     alert(error);

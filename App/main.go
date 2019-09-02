@@ -45,6 +45,7 @@ func startHTTPServer() *http.Server {
 	http.HandleFunc("/getFormInfo", form.Get)
 	http.HandleFunc("/getNewCustomer", customers.Create)
 	http.HandleFunc("/getCustomers", customers.GetById)
+	http.HandleFunc("/updateCustomer", customers.UpdateCustomer)
 
 	go func() {
 		// returns ErrServerClosed on graceful close

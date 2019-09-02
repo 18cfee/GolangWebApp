@@ -22,7 +22,7 @@
                 <div class="columns is-mobile is-centered">
                     <div>
                         <div v-for="form in customer.Forms">
-                            <a v-bind:href="form.Id+'?custId='+customer.Id"><strong>{{form.Id}}</strong></a>
+                            <a v-bind:href="form.Page+'?custId='+customer.Id+'&formId='+form.Id"><strong>{{form.Page}} - {{form.Id}}</strong></a>
                         </div>
                         <button v-on:click="createForm">Create New Form</button>
                     </div>
@@ -60,6 +60,7 @@
         methods: {
             createForm: function() {
                 // pass everything this needs like userId etc... then stubbing is done
+                axios.post('/updateCustomer',this.customer)
                 window.location.href = 'FormV1.html?userId=test';
             },
         }
